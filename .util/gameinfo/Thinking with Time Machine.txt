@@ -1,0 +1,30 @@
+"GameInfo"
+{
+	game		"Thinking with Time Machine"
+	title		"Thinking with Time Machine"
+	gamelogo	1
+	gamedata	"portal2.fgd"
+
+	SupportsDX8		0
+	SupportsXbox360 1
+
+	developer	"Stridemannn"
+	developer_url	""
+	manual		"info.txt"
+	icon 		"resource/TWTM"
+
+	FileSystem
+	{
+		SteamAppId 286080
+		ToolsAppId 211
+ 
+		SearchPaths
+		{
+			game		|gameinfo_path|.
+			game		portal2
+			game		"COMMONDIRGOESHERE"
+			platform	platform
+		}
+	}
+}
+ 

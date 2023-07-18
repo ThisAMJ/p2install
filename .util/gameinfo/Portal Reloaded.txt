@@ -1,0 +1,32 @@
+"GameInfo"
+{
+    game	"Portal Reloaded"
+	title	"Portal Reloaded"
+	type	 singleplayer_only
+	
+	developer		"Jannis Brinkmann"
+	developer_url	"https://www.portalreloaded.com"
+	icon			"resource/pr_icon"
+
+	gamelogo 1
+	SupportsDX8 0
+	SupportsXbox360 1
+ 
+    FileSystem
+    {
+        SteamAppId 1255980       // Portal Reloaded
+        ToolsAppId 211      	 // Hammer
+		AdditionalContentId	620	 // Portal 2
+ 
+        SearchPaths
+        {
+			Game				"|gameinfo_path|../portalreloaded"
+            Game               	"|gameinfo_path|../../Portal Reloaded/portal2/"	
+			Game				"|gameinfo_path|../../Portal Reloaded/portal2_dlc1/"			
+			Game				"|gameinfo_path|../../Portal Reloaded/portal2_dlc2/"
+			Game				"|gameinfo_path|../../Portal Reloaded/update/"
+			Game                "COMMONDIRGOESHERE"
+			platform			"|gameinfo_path|../../Portal Reloaded/platform/"			
+		}
+    }
+}

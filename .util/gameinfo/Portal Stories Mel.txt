@@ -1,0 +1,27 @@
+"GameInfo"
+{
+	game        	"Portal Stories: Mel"
+    title       	"Portal Stories: Mel"
+	GameData		"portal2.fgd"
+    gamelogo    	1
+ 
+    SupportsDX8     0
+    SupportsXbox360 1
+	
+	developer		"Prism Studios"
+	developer_url	"http://www.prismstudios.org/"
+ 
+    FileSystem
+    {
+        SteamAppId			317400     	// Portal 2 has ID 620, Portal Stories:Mel has ID 317400
+ 
+        SearchPaths
+        {	
+           	Game				|gameinfo_path|.		// Linked game content
+            Game				portal2
+            Game 		    	portal2_dlc2
+			Game				"COMMONDIRGOESHERE"
+            platform			platform
+		}
+    }
+}

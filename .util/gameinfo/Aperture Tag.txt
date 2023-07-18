@@ -1,0 +1,31 @@
+"GameInfo"
+{
+    game        "Aperture Tag: The Paint Gun Initiative"
+    title       "Aperture Tag: The Paint Gun Initiative"
+	GameData	"portal2.fgd"
+    gamelogo    1
+ 
+    SupportsDX8     0
+    SupportsXbox360 1
+ 
+    FileSystem
+    {
+        SteamAppId 280740      // Portal 2 has ID 620, Aperture Tag has ID 280740
+        ToolsAppId 211      // Hammer
+		AdditionalContentId	620	// Portal2
+ 
+        SearchPaths
+        {
+            Game               	|gameinfo_path|.		// Linked game content
+			Game				"|gameinfo_path|../../Aperture Tag/portal2"
+			Game				"|gameinfo_path|../../Aperture Tag/portal2_dlc2"
+			Game				"|gameinfo_path|../../Portal 2/portal2/"
+			Game				"|gameinfo_path|../../Portal 2/portal2_dlc2/"
+			Game				"|gameinfo_path|../../Portal 2/portal2_dlc1/"
+			Game				"|gameinfo_path|../../Portal 2/update/"
+			Game				"COMMONDIRGOESHERE"
+			platform			"|gameinfo_path|../../Portal 2/platform/"
+			
+		}
+    }
+}
