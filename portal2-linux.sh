@@ -1,6 +1,4 @@
-#!/bin/sh
-clear
-
+#!/bin/bash
 COMMONDIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 GAMEROOT="$PWD"
 
@@ -12,15 +10,9 @@ fi
 
 shift
 
-STEAM_RT32="$HOME/.local/share/Steam/ubuntu12_32/steam-runtime"
-# STEAM_RT64="$HOME/.local/share/Steam/ubuntu12_64/steam-runtime"
+STEAM_RT="$HOME/.local/share/Steam/ubuntu12_32/steam-runtime"
+REAPER="$STEAM_RT/../reaper"
 
-STEAM_RT="$STEAM_RT32"
-# if [[ "$GAME" == "Portal Reloaded" ]]; then
-#     STEAM_RT="$STEAM_RT64"
-# fi
-
-REAPER="$STEAM_RT32/../reaper"
 echo ""
 echo STEAM
 echo $STEAM_RT
@@ -29,25 +21,24 @@ echo $COMMONDIR
 echo $GAMEPATH
 echo $GAME
 
+echo ""
+echo LB_LIBRARY_PATH_INITIAL $LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=""
 export LD_LIBRARY_PATH="$GAMEROOT/bin/linux32:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$GAMEROOT/bin:$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$STEAM_RT32/pinned_libs_32:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$STEAM_RT/pinned_libs_32:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$STEAM_RT/lib/i386-linux-gnu:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$STEAM_RT/usr/lib/i386-linux-gnu:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$STEAM_RT/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$STEAM_RT/usr/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="/usr/lib32:$LD_LIBRARY_PATH"
-echo ""
-echo LD_LIBRARY_PATH
-echo $LD_LIBRARY_PATH
+echo LD_LIBRARY_PATH $LD_LIBRARY_PATH
 
+echo ""
+echo LD_PRELOAD_INITIAL $LD_PRELOAD
 export LD_PRELOAD=""
 export LD_PRELOAD="$STEAM_RT/../gameoverlayrenderer.so:$LD_PRELOAD"
-
-echo ""
-echo LD_PRELOAD
-echo $LD_PRELOAD
+echo LD_PRELOAD $LD_PRELOAD
 
 GAMEEXE=portal2
 
