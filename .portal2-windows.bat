@@ -1,5 +1,6 @@
 :: A batch file to achieve feature parity with the linux shell script
 @echo off
+cls
 
 set COMMONDIR=%~dp0
 set GAMEROOT=%CD%
