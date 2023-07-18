@@ -74,6 +74,7 @@ if [[ -f "$COMMONDIR/.util/gameinfo/$GAME.txt" ]]; then
 fi
 
 # Remove Portal Reloaded's default autoexec.cfg if we have a common one
+# TODO: Same for TWTM
 if [[ "$GAME" == "Portal Reloaded" ]]; then
     if [[ -f "$COMMONDIR/cfg/autoexec.cfg" ]]; then
         if [[ -f "$GAMEROOT/portalreloaded/cfg/autoexec.cfg" ]]; then
@@ -98,6 +99,10 @@ while [[ -d "portal2_dlc$highest_dlc" ]]; do
     cd ..
     ((highest_dlc++))
 done
+
+if [[ -d "$COMMONDIR/cfg" ]]; then
+    echo "svar_set linux 1; svar_set windows 0" > "$COMMONDIR/cfg/platform.cfg"
+fi
 
 GAMEEXE+=_linux
 

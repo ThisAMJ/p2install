@@ -20,13 +20,13 @@
  
         SearchPaths
         {
-			Game				"|gameinfo_path|../portalreloaded"
-            Game               	"|gameinfo_path|../../Portal Reloaded/portal2/"	
-			Game				"|gameinfo_path|../../Portal Reloaded/portal2_dlc1/"			
-			Game				"|gameinfo_path|../../Portal Reloaded/portal2_dlc2/"
-			Game				"|gameinfo_path|../../Portal Reloaded/update/"
+			Game				"portalreloaded"
+            Game               	"portal2/"	
+			Game				"portal2_dlc1/"			
+			Game				"portal2_dlc2/"
+			Game				"update/"
 			Game                "COMMONDIRGOESHERE"
-			platform			"|gameinfo_path|../../Portal Reloaded/platform/"			
+			platform			"platform/"			
 		}
     }
 }

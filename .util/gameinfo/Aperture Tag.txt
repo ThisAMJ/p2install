@@ -17,14 +17,14 @@
         SearchPaths
         {
             Game               	|gameinfo_path|.		// Linked game content
-			Game				"|gameinfo_path|../../Aperture Tag/portal2"
-			Game				"|gameinfo_path|../../Aperture Tag/portal2_dlc2"
-			Game				"|gameinfo_path|../../Portal 2/portal2/"
-			Game				"|gameinfo_path|../../Portal 2/portal2_dlc2/"
-			Game				"|gameinfo_path|../../Portal 2/portal2_dlc1/"
-			Game				"|gameinfo_path|../../Portal 2/update/"
+			Game				"portal2"
+			Game				"portal2_dlc2"
+			Game				"P2DIRGOESHERE/portal2/"
+			Game				"P2DIRGOESHERE/portal2_dlc2/"
+			Game				"P2DIRGOESHERE/portal2_dlc1/"
+			Game				"P2DIRGOESHERE/update/"
 			Game				"COMMONDIRGOESHERE"
-			platform			"|gameinfo_path|../../Portal 2/platform/"
+			platform			"P2DIRGOESHERE/platform/"
 			
 		}
     }
