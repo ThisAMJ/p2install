@@ -73,14 +73,14 @@ if "%P2DIR%" == "" (
 
 :: Repair gameinfo with p2common
 if exist "%COMMONDIR%/.util/gameinfo/%GAMENAME%.txt" (
-    del /Q "%GAMEROOT%\%GAMEARG%\gameinfo.txt"
+    del /Q "%GAMEARG%\gameinfo.txt"
     setlocal enabledelayedexpansion
     for /F "usebackq tokens=* delims=" %%i in ("%COMMONDIR%/.util/gameinfo/%GAMENAME%.txt") do (
         set "line=%%i"
         set "line=!line:GAMEROOTGOESHERE=%GAMEROOT%!"
         set "line=!line:COMMONDIRGOESHERE=%COMMONDIR%!"
         set "line=!line:P2DIRGOESHERE=%P2DIR%!"
-        echo.!line!>> "%GAMEROOT%/%GAMEARG%/gameinfo.txt"
+        echo.!line!>>"%GAMEARG%\gameinfo.txt"
     )
     endlocal
 )
