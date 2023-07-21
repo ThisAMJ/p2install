@@ -14,8 +14,8 @@ On Windows, the following launch option now works for all (supported) games and 
 
 For Linux, you still need to specify the game as seen below for now.
 
-|   Game   | Launch option
-| -------- | --------------
+|            Game            | Launch option
+| -------------------------- | -------------
 | Aperture Tag               | **[path to]**/.p2-common/portal2.bat aperturetag %command%
 | Portal 2                   | **[path to]**/.p2-common/portal2.bat portal2 %command%
 | Portal 2 Speedrun Mod      | **[path to]**/.p2-common/portal2.bat "**[path to]**\\sourcemods\\Portal 2 Speedrun Mod" %command%
@@ -25,11 +25,20 @@ For Linux, you still need to specify the game as seen below for now.
 
 ## Stuff I'm leaving here for my records
 
-| Game | %command% Windows
-| - | -
-| Aperture Tag               |"**[path to]**\Steam\steamapps\common\Aperture Tag\portal2.exe" -game aperturetag -steam
-| Portal 2                   |"**[path to]**\Steam\steamapps\common\Portal 2\portal2.exe" -game portal2 -steam
-| Portal 2 Speedrun Mod      |"**[path to]**\Steam\steamapps\common\Portal 2\portal2.exe" -game portal2 -steam -game "**[path to]**\Steam\steamapps\sourcemods\Portal 2 Speedrun Mod"
-| Portal Reloaded            |"**[path to]**\Steam\steamapps\common\Portal Reloaded\portal2.exe" +r_hunkalloclightmaps 0
-| Portal Stories: Mel        |"**[path to]**\Steam\steamapps\common\Portal Stories Mel\portal2.exe" -game portal_stories -steam -condebug
-| Thinking with Time Machine |"**[path to]**\Steam\steamapps\common\Thinking with Time Machine\portal2.exe" -game TWTM -steam
+Windows %command% is generally:
+> "**[path to]**\\common\\**[game]**\\portal2.exe" **[args]**
+
+Linux %command% is generally:
+> "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=**[appid]** -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/**[game]**/**[gameexec]**" **[args]**
+
+Linux %command% with Proton is generally:
+> "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=**[appid]** -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/SteamLinuxRuntime_sniper/_v2-entry-point" --verb=waitforexitandrun -- "**[path to]**/common/Proton - Experimental/proton" waitforexitandrun "**[path to]**/common/**[game]**/**[gameexec]**" **[args]**
+
+|            Game            | %command% Windows                                                                                                      | %command% Linux                                                                                                                                                                                                                                       | %command% Linux Proton
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---
+| Aperture Tag               |"**[path to]**\common\Aperture Tag\portal2.exe" -game aperturetag -steam                                                | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=280740  -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/Aperture Tag/portal2_linux" -game aperturetag -steam                                            | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=280740  -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/SteamLinuxRuntime_sniper/_v2-entry-point" --verb=waitforexitandrun -- "**[path to]**/common/Proton - Experimental/proton" waitforexitandrun "**[path to]**/common/Aperture Tag/portal2.exe" -game aperturetag -steam
+| Portal 2                   |"**[path to]**\common\Portal 2\portal2.exe" -game portal2 -steam                                                        | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=620     -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/Portal 2/portal2.sh" -game portal2 -steam                                                       | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=620     -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/SteamLinuxRuntime_sniper/_v2-entry-point" --verb=waitforexitandrun -- "**[path to]**/common/Proton - Experimental/proton" waitforexitandrun "**[path to]**/common/Portal 2/portal2.exe" -game portal2 -steam
+| Portal 2 Speedrun Mod      |"**[path to]**\common\Portal 2\portal2.exe" -game portal2 -steam -game "**[path to]**\sourcemods\Portal 2 Speedrun Mod" | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=620     -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/Portal 2/portal2.sh" -game portal2 -steam -game "**[path to]**/sourcemods/Portal 2 Speedrun Mod"| "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=620     -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/SteamLinuxRuntime_sniper/_v2-entry-point" --verb=waitforexitandrun -- "**[path to]**/common/Proton - Experimental/proton" waitforexitandrun "**[path to]**/common/Portal 2/portal2.exe" -game portal2 -steam -game "**[path to]**/sourcemods/Portal 2 Speedrun Mod"
+| Portal Reloaded            |"**[path to]**\common\Portal Reloaded\portal2.exe" +r_hunkalloclightmaps 0                                              | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=1255980 -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/Portal Reloaded/portal2.sh" -game portal2 -steam +r_hunkalloclightmaps 0 +r_dynamic 0           | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=1255980 -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/SteamLinuxRuntime_sniper/_v2-entry-point" --verb=waitforexitandrun -- "**[path to]**/common/Proton - Experimental/proton" waitforexitandrun "**[path to]**/common/Portal Reloaded/portal2.exe" +r_hunkalloclightmaps 0
+| Portal Stories: Mel        |"**[path to]**\common\Portal Stories Mel\portal2.exe" -game portal_stories -steam -condebug                             | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=317400  -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/Portal Stories Mel/portal2.sh" -game portal_stories -steam                                      | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=317400  -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/SteamLinuxRuntime_sniper/_v2-entry-point" --verb=waitforexitandrun -- "**[path to]**/common/Proton - Experimental/proton" waitforexitandrun "**[path to]**/common/Portal Stories Mel/portal2.exe" -game portal_stories -steam -condebug
+| Thinking with Time Machine |"**[path to]**\common\Thinking with Time Machine\portal2.exe" -game TWTM -steam                                         | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=286080  -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/Thinking with Time Machine/TWTM.sh" -game TWTM -steam                                           | "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=286080  -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/SteamLinuxRuntime_sniper/_v2-entry-point" --verb=waitforexitandrun -- "**[path to]**/common/Proton - Experimental/proton" waitforexitandrun "**[path to]**/common/Thinking with Time Machine/portal2.exe" -game TWTM -steam
