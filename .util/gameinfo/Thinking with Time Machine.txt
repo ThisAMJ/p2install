@@ -21,7 +21,7 @@
 		SearchPaths
 		{
 			game		|gameinfo_path|.
-			game		portal2
+			game		"P2PATHGOESHERE/portal2"
 			game		"COMMONDIRGOESHERE"
 			platform	platform
 		}

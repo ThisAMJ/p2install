@@ -19,12 +19,12 @@
             Game               	|gameinfo_path|.		// Linked game content
 			Game				"portal2"
 			Game				"portal2_dlc2"
-			Game				"P2DIRGOESHERE/portal2/"
-			Game				"P2DIRGOESHERE/portal2_dlc2/"
-			Game				"P2DIRGOESHERE/portal2_dlc1/"
-			Game				"P2DIRGOESHERE/update/"
+			Game				"P2PATHGOESHERE/portal2"
+			Game				"P2PATHGOESHERE/portal2_dlc2"
+			Game				"P2PATHGOESHERE/portal2_dlc1"
+			Game				"P2PATHGOESHERE/update"
 			Game				"COMMONDIRGOESHERE"
-			platform			"P2DIRGOESHERE/platform/"
+			platform			"P2PATHGOESHERE/platform"
 			
 		}
     }
