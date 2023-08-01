@@ -4,26 +4,23 @@ The idea of this repo is to generalise the speedrunning install process for Port
 
 Once the launch option is added, almost everything will be automatically installed.
 
-Credit goes to mlugg for the original Linux script this has been adapted from.
+Credit goes to [@mlugg](https://github.com/mlugg) for the original Linux script this has been adapted from.
 
-## Launch options
+## Installation
 
-On Windows, the following launch option now works for all (supported) games and mods:
+1. Download the source code of the repository (green `Code` button -> `Download Zip`)
 
-> **[path to]**/.p2-common/portal2.bat %command%
+2. Extract the zip file to a folder of your choice
 
-For Linux, you still need to specify the game as seen below for now.
+3. Go to the game's properties in steam and set the following launch option: (replacing **[path to]** with the path to the folder you extracted the zip to)
 
-|            Game            | Launch option
-| -------------------------- | -------------
-| Aperture Tag               | **[path to]**/.p2-common/portal2.bat aperturetag %command%
-| Portal 2                   | **[path to]**/.p2-common/portal2.bat portal2 %command%
-| Portal 2 Speedrun Mod      | **[path to]**/.p2-common/portal2.bat "**[path to]**\\sourcemods\\Portal 2 Speedrun Mod" %command%
-| Portal Reloaded            | **[path to]**/.p2-common/portal2.bat portal2 %command%
-| Portal Stories: Mel        | **[path to]**/.p2-common/portal2.bat portal_stories %command%
-| Thinking with Time Machine | **[path to]**/.p2-common/portal2.bat TWTM %command%
+    > **[path to]**/p2install/portal2.bat %command%
+
+4. Launch the game
 
 ## Stuff I'm leaving here for my records
+
+### You don't need to read any of this stuff! It's just some documentation about how Steam launches the games and mods
 
 Windows %command% is generally:
 > "**[path to]**\\common\\**[game]**\\portal2.exe" **[args]**
