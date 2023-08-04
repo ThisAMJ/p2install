@@ -1,3 +1,10 @@
-cfg/platform.cfg
+cfg/*
 extra-args.txt
 steam-location.txt
+sar.*
+.crash_reports/*
+.demos/*
+.dirs/*
+.tas/*
+*.log
+svars_persist
