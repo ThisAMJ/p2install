@@ -157,13 +157,13 @@ if [[ -f "$MAIN_DIR/console.log" ]];   then rm -f "$MAIN_DIR/console.log"; fi; l
 if [[ -f "$GAMEROOT/svars_persist" ]]; then mv -f "$GAMEROOT/svars_persist" "$COMMONDIR"; fi; ln -s "$COMMONDIR/svars_persist" "$GAMEROOT/svars_persist"
 
 # platform.cfg
-echo "svar_set gameplatform $PLATFORM"     > "$COMMONDIR/cfg/platform.cfg"
-echo "svar_set windows $WINDOWS"       >> "$COMMONDIR/cfg/platform.cfg"
-echo "svar_set linux   $LINUX"         >> "$COMMONDIR/cfg/platform.cfg"
-echo "svar_set proton  $PROTON"        >> "$COMMONDIR/cfg/platform.cfg"
-echo "svar_set macos   $MACOSX"        >> "$COMMONDIR/cfg/platform.cfg"
-echo "svar_set gamearg \"$(basename $GAMEARG)\""   >> "$COMMONDIR/cfg/platform.cfg"
-echo "svar_set gamename \"$GAMENAME\"" >> "$COMMONDIR/cfg/platform.cfg"
+echo "svar_set gameplatform $PLATFORM"            > "$COMMONDIR/cfg/platform.cfg"
+echo "svar_set windows $WINDOWS"                 >> "$COMMONDIR/cfg/platform.cfg"
+echo "svar_set linux   $LINUX"                   >> "$COMMONDIR/cfg/platform.cfg"
+echo "svar_set proton  $PROTON"                  >> "$COMMONDIR/cfg/platform.cfg"
+echo "svar_set macos   $MACOSX"                  >> "$COMMONDIR/cfg/platform.cfg"
+echo "svar_set gamearg \"$(basename $GAMEARG)\"" >> "$COMMONDIR/cfg/platform.cfg"
+echo "svar_set gamename \"$GAMENAME\""           >> "$COMMONDIR/cfg/platform.cfg"
 
 # Pack VPKs for DLCs
 highest_dlc=3 # TODO: Is this different for any games?
