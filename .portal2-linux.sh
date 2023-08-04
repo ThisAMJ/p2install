@@ -31,6 +31,12 @@ elif [[ "$PLATFORM" == *"Windows"* || "$PLATFORM" == *"NT"* ]]; then
 	WINDOWS=1
 	GAMEEXE="$1"
 	HOME=$USERPROFILE
+else
+	echo "Unknown platform: $PLATFORM" >> "$COMMONDIR/p2install.log"
+	echo "In launch of: $@" >> "$COMMONDIR/p2install.log"
+	echo "Let AMJ know!" >> "$COMMONDIR/p2install.log"
+	echo "" >> "$COMMONDIR/p2install.log"
+	exit 1
 fi
 if [[ "$7" == *"/common/SteamLinuxRuntime"* ]]; then
 	PROTON=1
