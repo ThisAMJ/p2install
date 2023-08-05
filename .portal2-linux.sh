@@ -110,13 +110,13 @@ done
 
 # Ensure GAMEEXE makes sense
 if [[ "$GAMEEXE" == *".sh" || "$GAMEEXE" == *".exe" ]]; then
-	if [[ "$GAMEEXE" == *".sh"]]; then GAMEEXE="${GAMEEXE::-3}"; fi
-	if [[ "$GAMEEXE" == *".exe"]]; then GAMEEXE="${GAMEEXE::-4}"; fi
+	if [[ "$GAMEEXE" == *".sh" ]]; then GAMEEXE="${GAMEEXE::-3}"; fi
+	if [[ "$GAMEEXE" == *".exe" ]]; then GAMEEXE="${GAMEEXE::-4}"; fi
 	if   [[ "$LINUX" -eq 1 && "$PROTON" -eq 0 ]]; then
 		GAMEEXE="${GAMEEXE}_linux"
 	elif [[ "$MACOSX" -eq 1 ]]; then
 		GAMEEXE="${GAMEEXE}_osx"
-	elif [[ "$WINDOWS" -eq 1 || "$PROTON" -eq 1; ]]; then
+	elif [[ "$WINDOWS" -eq 1 || "$PROTON" -eq 1 ]]; then
 		GAMEEXE="${GAMEEXE}.exe"
 	fi
 fi
