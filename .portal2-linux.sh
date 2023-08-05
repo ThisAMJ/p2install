@@ -109,16 +109,15 @@ for var in "$@"; do
 done
 
 # Ensure GAMEEXE makes sense
-if [[ "$GAMEEXE" == *".sh" || "$GAMEEXE" == *".exe" ]]; then
-	if [[ "$GAMEEXE" == *".sh" ]]; then GAMEEXE="${GAMEEXE::-3}"; fi
-	if [[ "$GAMEEXE" == *".exe" ]]; then GAMEEXE="${GAMEEXE::-4}"; fi
-	if   [[ "$LINUX" -eq 1 && "$PROTON" -eq 0 ]]; then
-		GAMEEXE="${GAMEEXE}_linux"
-	elif [[ "$MACOSX" -eq 1 ]]; then
-		GAMEEXE="${GAMEEXE}_osx"
-	elif [[ "$WINDOWS" -eq 1 || "$PROTON" -eq 1 ]]; then
-		GAMEEXE="${GAMEEXE}.exe"
-	fi
+if [[ "$GAMEEXE" == *".sh" ]]; then GAMEEXE="${GAMEEXE::-3}"; fi
+if [[ "$GAMEEXE" == *".exe" || "$GAMEEXE" == *"_osx" ]]; then GAMEEXE="${GAMEEXE::-4}"; fi
+if [[ "$GAMEEXE" == *"_linux" ]]; then GAMEEXE="${GAMEEXE::-6}"; fi
+if   [[ "$LINUX" -eq 1 && "$PROTON" -eq 0 ]]; then
+	GAMEEXE="${GAMEEXE}_linux"
+elif [[ "$MACOSX" -eq 1 ]]; then
+	GAMEEXE="${GAMEEXE}_osx"
+elif [[ "$WINDOWS" -eq 1 || "$PROTON" -eq 1 ]]; then
+	GAMEEXE="${GAMEEXE}.exe"
 fi
 
 P2PATH="$COMMONDIR/.dirs/Portal 2" # lol this is a silly thing
