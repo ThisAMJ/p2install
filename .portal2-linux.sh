@@ -154,6 +154,7 @@ mkdir -p "$COMMONDIR/.dirs"; rm -f "$COMMONDIR/.dirs/$GAMENAME"; ln -s "$GAMEPAT
 mkdir -p "$COMMONDIR/.tas/$GAMENAME_RAW"
 mkdir -p "$COMMONDIR/.crash_reports"
 mkdir -p "$COMMONDIR/.demos/$GAMENAME"
+mkdir -p "$COMMONDIR/.saves"; rm -f "$COMMONDIR/.saves/$GAMENAME"; ln -s "$MAIN_DIR/SAVE" "$COMMONDIR/.saves/$GAMENAME"
 if [[ -d "$MAIN_DIR/crosshair" ]];     then rm -rf "$MAIN_DIR/crosshair";  fi; ln -s "$COMMONDIR/.util/crosshair" "$MAIN_DIR/crosshair"
 if [[ -d "$GAMEROOT/ihud" ]];          then rm -rf "$GAMEROOT/ihud";       fi; ln -s "$COMMONDIR/.util/ihud" "$GAMEROOT/ihud"
 if [[ -d "$GAMEROOT/tas" ]];           then mv "$GAMEROOT/tas/"*           "$COMMONDIR/.tas/$GAMENAME_RAW"; rm -rf "$GAMEROOT/tas";           fi; ln -s "$COMMONDIR/.tas/$GAMENAME_RAW" "$GAMEROOT/tas"
@@ -180,9 +181,25 @@ while [[ -d "portal2_dlc$highest_dlc/.root" ]]; do
 	((highest_dlc++))
 done
 
-# TODO: .util/saves/$GAMENAME (?)
+# Install CM maplist and fast taunt for Portal 2
+if [[ "$GAMENAME" == "Portal 2" ]]; then
+	cp -f "$COMMONDIR/.util/gamefile-mods/challenge_maplist.txt" "$GAMEROOT/portal2_dlc1"
+	cp -f "$COMMONDIR/.util/gamefile-mods/scripts/talker/"* "$GAMEROOT/portal2/scripts/talker"
+fi
+
+# Install saves for any games that have them
 # Just copy into every steamid lol
-# Ditto for .util/maps (speedrun mods)
+if [[ -d "$COMMONDIR/.util/saves/$GAMENAME" ]]; then
+	for steamid in "$MAIN_DIR/SAVE/"*; do
+		if [[ -d "$steamid" ]]; then
+			cp -f "$COMMONDIR/.util/saves/$GAMENAME/"* "$steamid"
+		fi
+	done
+fi
+# Ditto for maps (speedrun mods)
+if [[ -d "$COMMONDIR/.util/maps/$GAMENAME" ]]; then
+	cp -f "$COMMONDIR/.util/maps/$GAMENAME/"* "$MAIN_DIR/maps"
+fi
 
 if [[ "$LINUX" -eq 1 ]]; then
 	STEAM_RT="$STEAM/ubuntu12_32/steam-runtime"
