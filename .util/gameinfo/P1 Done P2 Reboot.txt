@@ -1,0 +1,23 @@
+"GameInfo"
+{
+	game            "P1 Done P2 Reboot"
+	title           "P1 Done P2 Reboot"
+	GameData        "portal2.fgd"
+
+	SupportsDX8		0
+	SupportsXbox360 1
+
+	FileSystem
+	{
+		SteamAppId				620
+		ToolsAppId				211
+		SearchPaths
+		{
+			Game    |gameinfo_path|.
+			Game    "P2PATHGOESHERE/portal2_dlc2"
+			Game    "P2PATHGOESHERE/portal2_dlc1"
+			Game    "P2PATHGOESHERE/portal2"
+			Game    "COMMONDIRGOESHERE"
+		}
+	}
+}

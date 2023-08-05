@@ -1,0 +1,26 @@
+"GameInfo"
+{
+	gamelogo 	1
+	game 		"Portal Unity Reboot"
+	title 		"Portal Unity Reboot"
+	type		singleplayer_only
+	developer	"StillAliveStudios"
+	developer_url	"http://www.moddb.com/company/still-alive-studios"
+        "icon" 		"resource\icon\icon"
+	SupportsDX8     0
+	SupportsXbox360 1
+
+	FileSystem
+	{
+		SteamAppId 620      // Portal 2 has ID 620
+		ToolsAppId 211      // Hammer
+		SearchPaths
+		{
+			Game		|gameinfo_path|.
+			Game		"P2PATHGOESHERE/portal2_dlc2"
+			Game		"P2PATHGOESHERE/portal2_dlc1"
+			Game		"P2PATHGOESHERE/portal2"
+			Game		"COMMONDIRGOESHERE"
+		}
+	}
+}

@@ -1,0 +1,26 @@
+"GameInfo"
+{
+    game        "Memories"
+    title       "Memories"
+    gamelogo    0
+
+    developer		"Skinnycap"
+    developer_url 	"http://www.facebook.com/MartinSkinnycap"
+    icon 		"resource/icon"
+ 
+    SupportsDX8     0
+    SupportsXbox360 0
+ 
+    FileSystem
+    {
+        SteamAppId 620      // Portal 2 has ID 620
+        ToolsAppId 211      // Hammer
+ 
+        SearchPaths
+        {
+            Game                |gameinfo_path|.
+            Game                "P2PATHGOESHERE/portal2"
+            Game                "COMMONDIRGOESHERE"
+        }
+    }
+}

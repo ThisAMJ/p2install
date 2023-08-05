@@ -1,0 +1,26 @@
+"GameInfo"
+{
+	game        "P1 Done P2"
+	title       "P1 Done P2"
+	GameData    "portal2.fgd"
+	gamelogo    1
+
+	SupportsDX8     0
+	SupportsXbox360 1
+
+	icon			"resource/icon"
+
+	FileSystem
+	{
+		SteamAppId 620      // Portal 2 has ID 620
+		ToolsAppId 211      // Hammer
+		SearchPaths
+		{
+			Game			|gameinfo_path|.
+			Game			"P2PATHGOESHERE/portal2_dlc2"
+			Game			"P2PATHGOESHERE/portal2_dlc1"
+			Game			"P2PATHGOESHERE/portal2"
+			Game			"COMMONDIRGOESHERE"
+		}
+	}
+}

@@ -8,6 +8,11 @@ GAMENAME=$(basename "$PWD")
 GAMENAME_RAW=$GAMENAME
 GAMENAMEROOT_RAW="$GAMEROOT"
 
+fixgamename() {
+	if [[ "$GAMENAME" == "mebuild05" ]]; then GAMENAME="Mind Escape"; fi
+}
+fixgamename
+
 echo $(date) >> "$COMMONDIR/p2install.log"
 
 WINDOWS=0
@@ -90,6 +95,7 @@ for var in "$@"; do
 		if [[ "$GAMEARG" == *"/sourcemods/"* ]]; then
 			SOURCEMOD=1
 			GAMENAME=$(basename "$GAMEARG")
+			fixgamename
 			GAMEPATH="$GAMEARG"
 		fi
 	else
@@ -102,12 +108,16 @@ for var in "$@"; do
 	((ARGIDX++))
 done
 
-# If GAMEEXE ends with .sh, replace it with our platform
-if [[ "$GAMEEXE" == *".sh" ]]; then
-	if [[ "$LINUX" -eq 1 ]]; then
-		GAMEEXE="${GAMEEXE::-3}_linux"
+# Ensure GAMEEXE makes sense
+if [[ "$GAMEEXE" == *".sh" || "$GAMEEXE" == *".exe" ]]; then
+	if [[ "$GAMEEXE" == *".sh"]]; then GAMEEXE="${GAMEEXE::-3}"; fi
+	if [[ "$GAMEEXE" == *".exe"]]; then GAMEEXE="${GAMEEXE::-4}"; fi
+	if   [[ "$LINUX" -eq 1 && "$PROTON" -eq 0 ]]; then
+		GAMEEXE="${GAMEEXE}_linux"
 	elif [[ "$MACOSX" -eq 1 ]]; then
-		GAMEEXE="${GAMEEXE::-3}_osx"
+		GAMEEXE="${GAMEEXE}_osx"
+	elif [[ "$WINDOWS" -eq 1 || "$PROTON" -eq 1; ]]; then
+		GAMEEXE="${GAMEEXE}.exe"
 	fi
 fi
 
@@ -130,10 +140,11 @@ if ! [[ -d "$COMMONDIR/cfg" ]]; then mkdir "$COMMONDIR/cfg"; fi
 
 # Remove any cfgs that are common from the game's cfg folder(s)
 MAIN_DIR=""
-while read line || [[ -n $line ]]; do
+ESCAPED_GAMEARG=$(printf '%s\n' "$GAMEARG" | sed -e 's/[\/&]/\\&/g')
+while read -r line; do
 	if [[ "$line" != $(echo "$line" | sed -e 's/^Game[ \t][ \t"]*\([^"\r\n]*\).*$/\1/') ]]; then
 		line=$(echo "$line" | sed -e 's/^Game[ \t][ \t"]*\([^"\r\n]*\).*$/\1/')/
-		line=$(echo "$line" | sed -e "s/|gameinfo_path|/$GAMEARG\//")
+		line=$(echo "$line" | sed -e "s/|gameinfo_path|/$ESCAPED_GAMEARG\//g")
 		line=$(echo "$line" | sed -e 's/\/\.\//\//g')
 		line=$(cd "$line" && pwd)
 		if [[ "$MAIN_DIR" == "" ]]; then MAIN_DIR="$line"; fi
