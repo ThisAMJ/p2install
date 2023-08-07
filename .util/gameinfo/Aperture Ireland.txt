@@ -41,6 +41,7 @@
 			Game				"P2PATHGOESHERE/portal2"
 			Game				|gameinfo_path|portal
 			Game				|gameinfo_path|hl2
+			Game				"COMMONDIRGOESHERE"
 			Platform			"P2PATHGOESHERE/platform"
 		}
 	}
