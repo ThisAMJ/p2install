@@ -44,6 +44,7 @@ else
 	exit 1
 fi
 if [[ "$7" == *"/common/SteamLinuxRuntime"* ]]; then
+	PLATFORM="Proton"
 	PROTON=1
 	GAMEEXE="${12}"
 fi
@@ -79,6 +80,7 @@ if [[ -f "$COMMONDIR/extra-args.txt" ]]; then
 fi
 
 # Vulkan seems to crash Mel, Reloaded, and Aptag upon launch
+EXTRA_ARGS="$(echo "$EXTRA_ARGS" | sed 's/-vulkan//g')" # The user doesn't do this, let us
 VULKAN=1
 if [[ "$LINUX" -eq 1 ]]; then
 	if [[ "$GAMENAME" == "Portal Stories Mel" || "$GAMENAME" == "Portal Reloaded" || "$GAMENAME" == "Aperture Tag" ]]; then VULKAN=0; fi
@@ -141,8 +143,8 @@ if ! [[ -d "$COMMONDIR/cfg" ]]; then mkdir "$COMMONDIR/cfg"; fi
 MAIN_DIR=""
 ESCAPED_GAMEARG=$(printf '%s\n' "$GAMEARG" | sed -e 's/[\/&]/\\&/g')
 while read -r line; do
-	if [[ "$line" != $(echo "$line" | sed -e 's/^Game[ \t][ \t"]*\([^"\r\n]*\).*$/\1/') ]]; then
-		line=$(echo "$line" | sed -e 's/^Game[ \t][ \t"]*\([^"\r\n]*\).*$/\1/')/
+	if [[ "$line" != $(echo "$line" | sed -e 's/^Game[ \t][ \t"]*\([^"\r\n\t]*\).*$/\1/') ]]; then
+		line=$(echo "$line" | sed -e 's/^Game[ \t][ \t"]*\([^"\r\n\t]*\).*$/\1/')/
 		line=$(echo "$line" | sed -e "s/|gameinfo_path|/$ESCAPED_GAMEARG\//g")
 		line=$(echo "$line" | sed -e 's/\/\.\//\//g')
 		line=$(cd "$line" && pwd)
@@ -202,13 +204,13 @@ fi
 if [[ -d "$COMMONDIR/.util/saves/$GAMENAME" ]]; then
 	for steamid in "$MAIN_DIR/SAVE/"*; do
 		if [[ -d "$steamid" ]]; then
-			cp -f "$COMMONDIR/.util/saves/$GAMENAME/"* "$steamid"
+			cp -fr "$COMMONDIR/.util/saves/$GAMENAME/"* "$steamid"
 		fi
 	done
 fi
-# Ditto for maps (speedrun mods)
-if [[ -d "$COMMONDIR/.util/maps/$GAMENAME" ]]; then
-	cp -f "$COMMONDIR/.util/maps/$GAMENAME/"* "$MAIN_DIR/maps"
+# Ditto for speedrun mods
+if [[ -d "$COMMONDIR/.util/srmods/$GAMENAME" ]]; then
+	cp -fr "$COMMONDIR/.util/srmods/$GAMENAME/"* "$MAIN_DIR"
 fi
 
 if [[ "$LINUX" -eq 1 ]]; then
@@ -253,13 +255,13 @@ if [[ "$WINDOWS" -eq 1 ]]; then
 	"$GAMEROOT/$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
 	exit $ERRORLEVEL
 elif [[ "$LINUX" -eq 1 ]]; then
-	ulimit -n 2048 # Limit the game to at most 2048 files open at once (why?)
 
 	STATUS=42
 	while [ $STATUS -eq 42 ]; do
 		if [[ "$PROTON" == 1 ]]; then
 			"$REAPER" SteamLaunch "$3" -- "$5" -- "$7" --verb=waitforexitandrun -- "${10}" waitforexitandrun "$GAMEROOT/$GAMEEXE" "" -game "$GAMEARG" $EXTRA_ARGS
 		else
+			ulimit -n 2048 # Limit the game to at most 2048 files open at once (why?)
 			"$REAPER" SteamLaunch "$3" -- $GAME_DEBUGGER "$GAMEROOT/$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
 		fi
 		STATUS=$?
