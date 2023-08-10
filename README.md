@@ -4,7 +4,12 @@ The idea of this repo is to generalise the speedrunning install process for Port
 
 Once the launch option is added, almost everything will be automatically installed.
 
-Credit goes to [@mlugg](https://github.com/mlugg) for the original Linux script this has been adapted from.
+Credit goes to [@mlugg] for the original Linux script this has been adapted from, and [@JaioCG] and [@Dreadn0x] for their work on [p2mod-speedrun-utils]
+
+[@mlugg]: https://github.com/mlugg
+[@JaioCG]: https://github.com/JaioCG
+[@Dreadn0x]: https://github.com/Dreadn0x
+[p2mod-speedrun-utils]: https://github.com/JaioCG/p2mod-speedrun-utils
 
 ## Installation
 
