@@ -16,7 +16,7 @@
  
         SearchPaths
         {
-            Game               	|gameinfo_path|.		// Linked game content
+            Game               	|gameinfo_path|.
 			Game				"portal2"
 			Game				"portal2_dlc2"
 			Game				"P2PATHGOESHERE/portal2"

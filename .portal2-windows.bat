@@ -50,7 +50,7 @@ if exist "%COMMONDIR%/steam-location.txt" (
 )
 setlocal enabledelayedexpansion
 if exist "%STEAM%/steamapps/libraryfolders.vdf" (
-    for /F usebackq^ delims^=^"^ tokens^=* %%i in ("%STEAM%/steamapps/libraryfolders.vdf") do (
+    for /F "usebackq delims="" tokens=*" %%i in ("%STEAM%/steamapps/libraryfolders.vdf") do (
         set "line=%%i"
         set "line=!line:*"=!     "
         if "!line:~0,4!" == "path" (
@@ -86,39 +86,74 @@ if "%P2PATH%" == "" (
 
 :: Repair gameinfo with p2common
 if exist "%COMMONDIR%/.util/gameinfo/%GAMENAME%.txt" (
-    del /Q "%GAMEARG%\gameinfo.txt"
-    setlocal enabledelayedexpansion
-    for /F "usebackq tokens=* delims=" %%i in ("%COMMONDIR%/.util/gameinfo/%GAMENAME%.txt") do (
-        set "line=%%i"
-        set "line=!line:GAMEROOTGOESHERE=%GAMEROOT%!"
-        set "line=!line:COMMONDIRGOESHERE=%COMMONDIR%!"
-        set "line=!line:P2PATHGOESHERE=%P2PATH%!"
-        echo.!line!>>"%GAMEARG%\gameinfo.txt"
-    )
-    endlocal
+    del /s /q "%GAMEARG%\gameinfo.txt"
 )
 
-:: TODO: Remove game's cfg files that we have in common
+set "MAIN_DIR="
+set "SEARCHPATHS=0"
+setlocal enabledelayedexpansion
+for /F "usebackq tokens=* delims=" %%i in ("%COMMONDIR%/.util/gameinfo/%GAMENAME%.txt") do (
+    set "line=%%i"
+    if "!line:SearchPaths=!" neq "!line!" set "SEARCHPATHS=1"
+    set "line=!line:GAMEROOTGOESHERE=%GAMEROOT%!"
+    set "line=!line:COMMONDIRGOESHERE=%COMMONDIR%!"
+    set "line=!line:P2PATHGOESHERE=%P2PATH%!"
+    echo.!line!>>"%GAMEARG%\gameinfo.txt"
+    if "!line:Game=!" neq "!line!" (
+        if "!SEARCHPATHS!" equ "1" (
+            :: Remove comments (... attempt to remove comments)
+            set "tmp=!line:*//=!"
+            if "!tmp!" neq "!line!" (
+                set "line=!!line:!tmp!=!!"
+                set "line=!line:~0,-2!"
+            )
+
+            set "line=!line:*Game=!"
+            set "line=!line:"=!\"
+            for /F "tokens=*" %%a in ("!line!") do set "line=%%a"
+            set "line=!line:|gameinfo_path|=%GAMEARG%\!"
+            set "line=!line:\.\=\!"
+            if "!MAIN_DIR!" equ "" (set "MAIN_DIR=!line!")
+            if "!line:%COMMONDIR%=!" equ "!line!" (
+                :: Remove game's cfg files that we have in common
+                :: !line! is a folder, in which we want to rename the cfg files
+                if exist "!line!\cfg" (
+                    for /F "tokens=*" %%a in ('dir /b /s "!line!\cfg\*.cfg" ') do (
+                        set "file=%%~nxa"
+                        if exist "%COMMONDIR%\cfg\!file!" (
+                            mkdir "!line!\cfg\.p2install-backup"
+                            move /Y "!line!\cfg\!file!" "!line!\cfg\.p2install-backup\!file!"
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+endlocal & set "MAIN_DIR=%MAIN_DIR%"
+
+if not exist "%COMMONDIR%\cfg\" mkdir "%COMMONDIR%\cfg"
+
 :: TODO: Pack VPKs for DLCs
 :: TODO: .util/saves/%GAMENAME% (same for maps)
 :: TODO: Fix Reloaded mklinks (goes to portalreloaded instead of portal2 gamearg (first game path in gameinfo))
 
 mkdir "%COMMONDIR%/cfg"
-echo "svar_set gameplatform Windows"     > "%COMMONDIR%/cfg/platform.cfg"
-echo "svar_set linux 0"                 >> "%COMMONDIR%/cfg/platform.cfg"
-echo "svar_set windows 1"               >> "%COMMONDIR%/cfg/platform.cfg"
-echo "svar_set macos 0"                 >> "%COMMONDIR%/cfg/platform.cfg"
-echo "svar_set gamearg ""%GAMEARG%"""   >> "%COMMONDIR%/cfg/platform.cfg"
-echo "svar_set gamename ""%GAMENAME%""" >> "%COMMONDIR%/cfg/platform.cfg"
+echo svar_set gameplatform Windows   > "%COMMONDIR%/cfg/platform.cfg"
+echo svar_set linux 0               >> "%COMMONDIR%/cfg/platform.cfg"
+echo svar_set windows 1             >> "%COMMONDIR%/cfg/platform.cfg"
+echo svar_set macos 0               >> "%COMMONDIR%/cfg/platform.cfg"
+echo svar_set gamearg "%GAMEARG%"   >> "%COMMONDIR%/cfg/platform.cfg"
+echo svar_set gamename "%GAMENAME%" >> "%COMMONDIR%/cfg/platform.cfg"
 
-echo "%date% %time%" >> "%COMMONDIR%/p2install.log"
-echo "    PLATFORM: Windows"                     >> "%COMMONDIR%/p2install.log"
-echo "    GAMEROOT: %GAMEROOT% (GAME %GAMEARG%)" >> "%COMMONDIR%/p2install.log"
-echo "     GAMEEXE: %GAMEEXE%"                   >> "%COMMONDIR%/p2install.log"
-echo "INITIAL_ARGS: %*"                          >> "%COMMONDIR%/p2install.log"
-echo "  EXTRA_ARGS: %EXTRA_ARGS%"                >> "%COMMONDIR%/p2install.log"
-echo "    GAMENAME: %GAMENAME%"                  >> "%COMMONDIR%/p2install.log"
-echo "   COMMONDIR: %COMMONDIR%"                 >> "%COMMONDIR%/p2install.log"
-echo "" >> "%COMMONDIR%/p2install.log"
+echo %date% %time% >> "%COMMONDIR%/p2install.log"
+echo     PLATFORM: Windows                       >> "%COMMONDIR%/p2install.log"
+echo     GAMEROOT: %GAMEROOT% ^(GAME %GAMEARG%^) >> "%COMMONDIR%/p2install.log"
+echo      GAMEEXE: %GAMEEXE%                     >> "%COMMONDIR%/p2install.log"
+echo INITIAL_ARGS: %*                            >> "%COMMONDIR%/p2install.log"
+echo   EXTRA_ARGS: %EXTRA_ARGS%                  >> "%COMMONDIR%/p2install.log"
+echo     GAMENAME: %GAMENAME%                    >> "%COMMONDIR%/p2install.log"
+echo    COMMONDIR: %COMMONDIR%                   >> "%COMMONDIR%/p2install.log"
+echo. >> "%COMMONDIR%/p2install.log"
 
 START "" "%GAMEEXE%" -game "%GAMEARG%" %EXTRA_ARGS%
