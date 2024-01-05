@@ -1,4 +1,7 @@
+Autoreset/*
 cfg/*
+Configs/*
+Custom/*
 extra-args.txt
 steam-location.txt
 sar.*
@@ -8,3 +11,6 @@ sar.*
 .tas/*
 *.log
 svars_persist
+autosubmit_key.txt
+*/.sar-config.mk
+*/.smsm-config.mk
