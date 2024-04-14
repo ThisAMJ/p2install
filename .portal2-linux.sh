@@ -9,6 +9,7 @@ GAMENAME_RAW=$GAMENAME
 GAMENAMEROOT_RAW="$GAMEROOT"
 
 fixgamename() {
+	if [[ "$GAMENAME" == "aperture_ireland" ]]; then GAMENAME="Aperture Ireland"; fi
 	if [[ "$GAMENAME" == "mebuild05" ]]; then GAMENAME="Mind Escape"; fi
 }
 fixgamename

@@ -8,12 +8,24 @@ set "GAMEEXE=%~1"
 for /F "delims=" %%i in ("%CD%") do set "GAMENAME=%%~ni"
 if "%COMMONDIR:~-1%" == "\" set "COMMONDIR=%COMMONDIR:~0,-1%"
 if "%GAMEROOT:~-1%" == "\" set "GAMEROOT=%GAMEROOT:~0,-1%"
+set "SRCONFIGS="
+if exist "%COMMONDIR%/srconfigs.txt" set /P SRCONFIGS=<"%COMMONDIR%/srconfigs.txt"
+call :fixgamename
+goto n
 
+:fixgamename
+if "%GAMENAME%" == "aperture_ireland" set "GAMENAME=Aperture Ireland"
+if "%GAMENAME%" == "aperturetag" set "GAMENAME=Aperture Tag"
+exit /B
+
+:n
 set "GAMEARG=portal2"
-set "EXTRA_ARGS=-novid +mat_motion_blur_enabled 0 -background 5 -condebug -console" &:: -vulkan
-if exist "%COMMONDIR%extra-args.txt" (
-    for /F "usebackq delims=" %%i in ("%COMMONDIR%extra-args.txt") do set "EXTRA_ARGS=%%i"
+set "EXTRA_ARGS=-novid +mat_motion_blur_enabled 0 -background 5 -console -vulkan"
+setlocal enabledelayedexpansion
+if exist "%COMMONDIR%\extra-args.txt" (
+    for /F "usebackq delims=" %%i in ("%COMMONDIR%\extra-args.txt") do set "EXTRA_ARGS=!EXTRA_ARGS! %%i"
 )
+endlocal & set "EXTRA_ARGS=%EXTRA_ARGS%"
 set "FIRSTARG=1"
 setlocal enabledelayedexpansion
 for %%a in (%*) do (
@@ -29,6 +41,7 @@ for %%a in (%*) do (
         set "GAMEARG=!arg!"
         set "GAMENEXT=0"
         if "!arg:\sourcemods\=!" neq "!arg!" set "GAMENAME=!arg:*\sourcemods\=!"
+        call :fixgamename
         set "GAMEPATH=!arg!"
     ) else (
         set "EXTRA_ARGS=!EXTRA_ARGS! !arg!"
@@ -37,10 +50,10 @@ for %%a in (%*) do (
 endlocal & set "GAMENAME=%GAMENAME%" & set "GAMEARG=%GAMEARG%" & set "EXTRA_ARGS=%EXTRA_ARGS%"
 
 mkdir "%COMMONDIR%\.dirs"
-rmdir       "%COMMONDIR%\.dirs\%GAMENAME%" & mklink /J "%COMMONDIR%\.dirs\%GAMENAME%" "%GAMEPATH%"
+rmdir /Q /S "%COMMONDIR%\.dirs\%GAMENAME%" & mklink /J "%COMMONDIR%\.dirs\%GAMENAME%" "%GAMEPATH%"
 rmdir /Q /S "%GAMEARG%\crosshair"          & mklink /J "%GAMEARG%\crosshair"          "%COMMONDIR%\.util\crosshair"
 rmdir /Q /S "%GAMEROOT%\ihud"              & mklink /J "%GAMEROOT%\ihud"              "%COMMONDIR%\.util\ihud"
-del /Q      "%GAMEARG%\console.log"        & mklink /H "%GAMEARG%\console.log"        "%COMMONDIR%\p2console.log"
+@REM del /Q      "%GAMEARG%\console.log"        & mklink /H "%GAMEARG%\console.log"        "%COMMONDIR%\p2console.log"
 
 :readsteam
 set "P2PATH="
@@ -124,8 +137,17 @@ for /F "usebackq tokens=* delims=" %%i in ("%COMMONDIR%/.util/gameinfo/%GAMENAME
                             mkdir "!line!\cfg\.p2install-backup"
                             move /Y "!line!\cfg\!file!" "!line!\cfg\.p2install-backup\!file!"
                         )
+
+                        if "%SRCONFIGS%" neq "" (
+                            if exist "%SRCONFIGS%\cfg\!file!" (
+                                mkdir "!line!\cfg\.p2install-backup"
+                                move /Y "!line!\cfg\!file!" "!line!\cfg\.p2install-backup\!file!"
+                            )
+                        )
                     )
                 )
+            ) else (
+                echo Game "%SRCONFIGS%">>"%GAMEARG%\gameinfo.txt"
             )
         )
     )
@@ -133,6 +155,8 @@ for /F "usebackq tokens=* delims=" %%i in ("%COMMONDIR%/.util/gameinfo/%GAMENAME
 endlocal & set "MAIN_DIR=%MAIN_DIR%"
 
 if not exist "%COMMONDIR%\cfg\" mkdir "%COMMONDIR%\cfg"
+
+if exist "steam_appid.txt" copy /Y "steam_appid.txt" "%COMMONDIR%\.util\.sar-appid.txt"
 
 :: TODO: Pack VPKs for DLCs
 :: TODO: .util/saves/%GAMENAME% (same for maps)
