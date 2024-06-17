@@ -1,5 +1,6 @@
-Autoreset/*
-cfg/*
+p2c/Autoreset/*
+p2c/cfg/*
+p2c/tas/*
 Configs/*
 Custom/*
 extra-args.txt
@@ -9,8 +10,6 @@ sar.*
 .crash_reports/*
 .demos/*
 .dirs/*
-.tas/*
-tas/*
 *.log
 svars_persist*
 autosubmit_key.txt
@@ -19,3 +18,9 @@ autosubmit.key
 */.sar-config.mk
 */.sar-copy.bat
 */.smsm-config.mk
+*cvars*
+bruteforcing.bat
+sar-bf.dll
+sar-bf.pdb
+crosshair/*
+ihud/*

@@ -17,8 +17,10 @@
  
         SearchPaths
         {	
+            Mod                 cmm
            	Game				|gameinfo_path|.
             Game				portal2
+            Game                portal2_dlc1
             Game 		    	portal2_dlc2
 			Game				"COMMONDIRGOESHERE"
             platform			platform

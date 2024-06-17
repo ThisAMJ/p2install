@@ -53,7 +53,10 @@ fi
 if [[ ! -f "$GAMEEXE" ]]; then
 	echo "Malformed launch command: $@" >> "$COMMONDIR/p2install.log"
 	echo "Launch option should be in the form of:" >> "$COMMONDIR/p2install.log"
-	echo "$COMMONDIR/portal2.bat %command%" >> "$COMMONDIR/p2install.log"
+
+	# one directory higher than commondir
+	BATDIR=$(dirname "$COMMONDIR/../")
+	echo "$BATDIR/portal2.bat %command%" >> "$COMMONDIR/p2install.log"
 	echo "" >> "$COMMONDIR/p2install.log"
 	exit 1
 fi
@@ -75,7 +78,7 @@ if ! [[ -d "$STEAM" ]]; then
 fi
 
 GAMEARG="portal2"
-EXTRA_ARGS="-novid +mat_motion_blur_enabled 0 -background 5 -condebug -console"
+EXTRA_ARGS="-novid +mat_motion_blur_enabled 0 -console"
 if [[ -f "$COMMONDIR/extra-args.txt" ]]; then
 	EXTRA_ARGS="$(cat "$COMMONDIR/extra-args.txt")"
 fi
@@ -163,8 +166,8 @@ done < "$GAMEARG/gameinfo.txt"
 
 # Make symlinks to the game's directories for convenience and install things
 # Debatable whether svars should be common
-mkdir -p "$COMMONDIR/.dirs"; rm -f "$COMMONDIR/.dirs/$GAMENAME"; ln -s "$GAMEPATH" "$COMMONDIR/.dirs/$GAMENAME"
-mkdir -p "$COMMONDIR/.tas/$GAMENAME_RAW"
+mkdir -p "$COMMONDIR/../.dirs"; rm -f "$COMMONDIR/../.dirs/$GAMENAME"; ln -s "$GAMEPATH" "$COMMONDIR/../.dirs/$GAMENAME"
+mkdir -p "$COMMONDIR/tas/$GAMENAME_RAW"
 mkdir -p "$COMMONDIR/.crash_reports"
 mkdir -p "$COMMONDIR/.demos/$GAMENAME"
 mkdir -p "$COMMONDIR/.saves"; rm -f "$COMMONDIR/.saves/$GAMENAME"; ln -s "$MAIN_DIR/SAVE" "$COMMONDIR/.saves/$GAMENAME"

@@ -20,7 +20,7 @@ exit /B
 
 :n
 set "GAMEARG=portal2"
-set "EXTRA_ARGS=-novid +mat_motion_blur_enabled 0 -background 5 -console -vulkan"
+set "EXTRA_ARGS=-novid +mat_motion_blur_enabled 0 -console -vulkan"
 setlocal enabledelayedexpansion
 if exist "%COMMONDIR%\extra-args.txt" (
     for /F "usebackq delims=" %%i in ("%COMMONDIR%\extra-args.txt") do set "EXTRA_ARGS=!EXTRA_ARGS! %%i"
@@ -49,10 +49,9 @@ for %%a in (%*) do (
 )
 endlocal & set "GAMENAME=%GAMENAME%" & set "GAMEARG=%GAMEARG%" & set "EXTRA_ARGS=%EXTRA_ARGS%"
 
-mkdir "%COMMONDIR%\.dirs"
-rmdir /Q /S "%COMMONDIR%\.dirs\%GAMENAME%" & mklink /J "%COMMONDIR%\.dirs\%GAMENAME%" "%GAMEPATH%"
-rmdir /Q /S "%GAMEARG%\crosshair"          & mklink /J "%GAMEARG%\crosshair"          "%COMMONDIR%\.util\crosshair"
-rmdir /Q /S "%GAMEROOT%\ihud"              & mklink /J "%GAMEROOT%\ihud"              "%COMMONDIR%\.util\ihud"
+mkdir "%COMMONDIR%\..\.dirs"
+rmdir /Q /S "%COMMONDIR%\..\.dirs\%GAMENAME%" & mklink /J "%COMMONDIR%\..\.dirs\%GAMENAME%" "%GAMEPATH%"
+copy /Y "%COMMONDIR%\sar.pdb" "%GAMEROOT%"
 @REM del /Q      "%GAMEARG%\console.log"        & mklink /H "%GAMEARG%\console.log"        "%COMMONDIR%\p2console.log"
 
 :readsteam
@@ -98,14 +97,14 @@ if "%P2PATH%" == "" (
 )
 
 :: Repair gameinfo with p2common
-if exist "%COMMONDIR%/.util/gameinfo/%GAMENAME%.txt" (
+if exist "%COMMONDIR%/../.util/gameinfo/%GAMENAME%.txt" (
     del /s /q "%GAMEARG%\gameinfo.txt"
 )
 
 set "MAIN_DIR="
 set "SEARCHPATHS=0"
 setlocal enabledelayedexpansion
-for /F "usebackq tokens=* delims=" %%i in ("%COMMONDIR%/.util/gameinfo/%GAMENAME%.txt") do (
+for /F "usebackq tokens=* delims=" %%i in ("%COMMONDIR%/../.util/gameinfo/%GAMENAME%.txt") do (
     set "line=%%i"
     if "!line:SearchPaths=!" neq "!line!" set "SEARCHPATHS=1"
     set "line=!line:GAMEROOTGOESHERE=%GAMEROOT%!"
@@ -156,7 +155,7 @@ endlocal & set "MAIN_DIR=%MAIN_DIR%"
 
 if not exist "%COMMONDIR%\cfg\" mkdir "%COMMONDIR%\cfg"
 
-if exist "steam_appid.txt" copy /Y "steam_appid.txt" "%COMMONDIR%\.util\.sar-appid.txt"
+if exist "steam_appid.txt" copy /Y "steam_appid.txt" "%COMMONDIR%\..\.util\.sar-appid.txt"
 
 :: TODO: Pack VPKs for DLCs
 :: TODO: .util/saves/%GAMENAME% (same for maps)
