@@ -131,11 +131,11 @@ P2PATH="$COMMONDIR/.dirs/Portal 2" # lol this is a silly thing
 # Repair gameinfo with p2common
 # Case insensitive rename of gameinfo.txt
 for x in "$GAMEARG"/*.txt; do if [[ "$(basename "$x" | tr '[:upper:]' '[:lower:]')" == "gameinfo.txt" && "$(basename "$x")" != "gameinfo.txt" ]]; then mv "$x" "$GAMEARG/gameinfo.txt"; fi; done
-if [[ -f "$COMMONDIR/.util/gameinfo/$GAMENAME.txt" ]]; then
+if [[ -f "$COMMONDIR/../.util/gameinfo/$GAMENAME.txt" ]]; then
 	ESCAPED_GAMEROOT=$(printf '%s\n' "$GAMEROOT" | sed -e 's/[\/&]/\\&/g')
 	ESCAPED_COMMONDIR=$(printf '%s\n' "$COMMONDIR" | sed -e 's/[\/&]/\\&/g')
 	ESCAPED_P2PATH=$(printf '%s\n' "$P2PATH" | sed -e 's/[\/&]/\\&/g')
-	cp -f  "$COMMONDIR/.util/gameinfo/$GAMENAME.txt" "$GAMEARG/gameinfo.txt"
+	cp -f  "$COMMONDIR/../.util/gameinfo/$GAMENAME.txt" "$GAMEARG/gameinfo.txt"
 	sed -i "s/GAMEROOTGOESHERE/$ESCAPED_GAMEROOT/"   "$GAMEARG/gameinfo.txt"
 	sed -i "s/COMMONDIRGOESHERE/$ESCAPED_COMMONDIR/" "$GAMEARG/gameinfo.txt"
 	sed -i "s/P2PATHGOESHERE/$ESCAPED_P2PATH/"       "$GAMEARG/gameinfo.txt"
@@ -171,8 +171,8 @@ mkdir -p "$COMMONDIR/tas/$GAMENAME_RAW"
 mkdir -p "$COMMONDIR/.crash_reports"
 mkdir -p "$COMMONDIR/.demos/$GAMENAME"
 mkdir -p "$COMMONDIR/.saves"; rm -f "$COMMONDIR/.saves/$GAMENAME"; ln -s "$MAIN_DIR/SAVE" "$COMMONDIR/.saves/$GAMENAME"
-if [[ -d "$MAIN_DIR/crosshair" ]];     then rm -rf "$MAIN_DIR/crosshair";  fi; ln -s "$COMMONDIR/.util/crosshair" "$MAIN_DIR/crosshair"
-if [[ -d "$GAMEROOT/ihud" ]];          then rm -rf "$GAMEROOT/ihud";       fi; ln -s "$COMMONDIR/.util/ihud" "$GAMEROOT/ihud"
+if [[ -d "$MAIN_DIR/crosshair" ]];     then rm -rf "$MAIN_DIR/crosshair";  fi; ln -s "$COMMONDIR/../.util/crosshair" "$MAIN_DIR/crosshair"
+if [[ -d "$GAMEROOT/ihud" ]];          then rm -rf "$GAMEROOT/ihud";       fi; ln -s "$COMMONDIR/../.util/ihud" "$GAMEROOT/ihud"
 if [[ -d "$GAMEROOT/tas" ]];           then mv "$GAMEROOT/tas/"*           "$COMMONDIR/.tas/$GAMENAME_RAW"; rm -rf "$GAMEROOT/tas";           fi; ln -s "$COMMONDIR/.tas/$GAMENAME_RAW" "$GAMEROOT/tas"
 if [[ -d "$GAMEROOT/crash_reports" ]]; then mv "$GAMEROOT/crash_reports/"* "$COMMONDIR/.crash_reports";     rm -rf "$GAMEROOT/crash_reports"; fi; ln -s "$COMMONDIR/.crash_reports"     "$GAMEROOT/crash_reports"
 if [[ -d "$MAIN_DIR/demos" ]];         then mv "$MAIN_DIR/demos/"*         "$COMMONDIR/.demos/$GAMENAME";   rm -rf "$MAIN_DIR/demos";         fi; ln -s "$COMMONDIR/.demos/$GAMENAME"   "$MAIN_DIR/demos"
@@ -192,29 +192,29 @@ echo "svar_set gamename \"$GAMENAME\""           >> "$COMMONDIR/cfg/platform.cfg
 highest_dlc=3 # TODO: Is this different for any games?
 while [[ -d "portal2_dlc$highest_dlc/.root" ]]; do
 	cd "portal2_dlc$highest_dlc"
-	"$COMMONDIR/.util/zvpk" ".root/"
+	"$COMMONDIR/../.util/zvpk" ".root/"
 	cd ..
 	((highest_dlc++))
 done
 
 # Install CM maplist and fast taunt for Portal 2
 if [[ "$GAMENAME" == "Portal 2" ]]; then
-	cp -f "$COMMONDIR/.util/gamefile-mods/challenge_maplist.txt" "$GAMEROOT/portal2_dlc1"
-	cp -f "$COMMONDIR/.util/gamefile-mods/scripts/talker/"* "$GAMEROOT/portal2/scripts/talker"
+	cp -f "$COMMONDIR/../.util/gamefile-mods/challenge_maplist.txt" "$GAMEROOT/portal2_dlc1"
+	cp -f "$COMMONDIR/../.util/gamefile-mods/scripts/talker/"* "$GAMEROOT/portal2/scripts/talker"
 fi
 
 # Install saves for any games that have them
 # Just copy into every steamid lol
-if [[ -d "$COMMONDIR/.util/saves/$GAMENAME" ]]; then
+if [[ -d "$COMMONDIR/../.util/saves/$GAMENAME" ]]; then
 	for steamid in "$MAIN_DIR/SAVE/"*; do
 		if [[ -d "$steamid" ]]; then
-			cp -fr "$COMMONDIR/.util/saves/$GAMENAME/"* "$steamid"
+			cp -fr "$COMMONDIR/../.util/saves/$GAMENAME/"* "$steamid"
 		fi
 	done
 fi
 # Ditto for speedrun mods
-if [[ -d "$COMMONDIR/.util/srmods/$GAMENAME" ]]; then
-	cp -fr "$COMMONDIR/.util/srmods/$GAMENAME/"* "$MAIN_DIR"
+if [[ -d "$COMMONDIR/../.util/srmods/$GAMENAME" ]]; then
+	cp -fr "$COMMONDIR/../.util/srmods/$GAMENAME/"* "$MAIN_DIR"
 fi
 
 if [[ "$LINUX" -eq 1 ]]; then
