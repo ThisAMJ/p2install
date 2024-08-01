@@ -40,14 +40,17 @@ for %%a in (%*) do (
         set "SOURCEMOD_OF_PATH=%GAMEROOT%"
         set "GAMEARG=!arg!"
         set "GAMENEXT=0"
-        if "!arg:\sourcemods\=!" neq "!arg!" set "GAMENAME=!arg:*\sourcemods\=!"
+        if "!arg:\sourcemods\=!" neq "!arg!" (
+            set "GAMEPATH=!arg!"
+            set "GAMENAME=!arg:*\sourcemods\=!"
+        )
         call :fixgamename
         set "GAMEPATH=!arg!"
     ) else (
         set "EXTRA_ARGS=!EXTRA_ARGS! !arg!"
     )
 )
-endlocal & set "GAMENAME=%GAMENAME%" & set "GAMEARG=%GAMEARG%" & set "EXTRA_ARGS=%EXTRA_ARGS%"
+endlocal & set "GAMENAME=%GAMENAME%" & set "GAMEARG=%GAMEARG%" & set "GAMEPATH=%GAMEPATH%" & set "EXTRA_ARGS=%EXTRA_ARGS%"
 
 mkdir "%COMMONDIR%\..\.dirs"
 rmdir "%COMMONDIR%\..\.dirs\%GAMENAME%" & mklink /J "%COMMONDIR%\..\.dirs\%GAMENAME%" "%GAMEPATH%"
