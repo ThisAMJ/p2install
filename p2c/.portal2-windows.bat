@@ -50,7 +50,7 @@ for %%a in (%*) do (
 endlocal & set "GAMENAME=%GAMENAME%" & set "GAMEARG=%GAMEARG%" & set "EXTRA_ARGS=%EXTRA_ARGS%"
 
 mkdir "%COMMONDIR%\..\.dirs"
-rmdir /Q /S "%COMMONDIR%\..\.dirs\%GAMENAME%" & mklink /J "%COMMONDIR%\..\.dirs\%GAMENAME%" "%GAMEPATH%"
+rmdir "%COMMONDIR%\..\.dirs\%GAMENAME%" & mklink /J "%COMMONDIR%\..\.dirs\%GAMENAME%" "%GAMEPATH%"
 copy /Y "%COMMONDIR%\sar.pdb" "%GAMEROOT%"
 @REM del /Q      "%GAMEARG%\console.log"        & mklink /H "%GAMEARG%\console.log"        "%COMMONDIR%\p2console.log"
 
