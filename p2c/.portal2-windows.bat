@@ -45,7 +45,7 @@ for %%a in (%*) do (
             set "GAMENAME=!arg:*\sourcemods\=!"
         )
         call :fixgamename
-        set "GAMEPATH=!arg!"
+        @REM set "GAMEPATH=!arg!"
     ) else (
         set "EXTRA_ARGS=!EXTRA_ARGS! !arg!"
     )

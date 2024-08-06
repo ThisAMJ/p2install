@@ -126,7 +126,7 @@ elif [[ "$WINDOWS" -eq 1 || "$PROTON" -eq 1 ]]; then
 	GAMEEXE="${GAMEEXE}.exe"
 fi
 
-P2PATH="$COMMONDIR/.dirs/Portal 2" # lol this is a silly thing
+P2PATH="$COMMONDIR/../.dirs/Portal 2" # lol this is a silly thing
 
 # Repair gameinfo with p2common
 # Case insensitive rename of gameinfo.txt
@@ -168,14 +168,14 @@ done < "$GAMEARG/gameinfo.txt"
 # Debatable whether svars should be common
 mkdir -p "$COMMONDIR/../.dirs"; rm -f "$COMMONDIR/../.dirs/$GAMENAME"; ln -s "$GAMEPATH" "$COMMONDIR/../.dirs/$GAMENAME"
 mkdir -p "$COMMONDIR/tas/$GAMENAME_RAW"
-mkdir -p "$COMMONDIR/.crash_reports"
-mkdir -p "$COMMONDIR/.demos/$GAMENAME"
-mkdir -p "$COMMONDIR/.saves"; rm -f "$COMMONDIR/.saves/$GAMENAME"; ln -s "$MAIN_DIR/SAVE" "$COMMONDIR/.saves/$GAMENAME"
+mkdir -p "$COMMONDIR/../.crash_reports"
+mkdir -p "$COMMONDIR/../.demos/$GAMENAME"
+mkdir -p "$COMMONDIR/../.saves"; rm -f "$COMMONDIR/../.saves/$GAMENAME"; ln -s "$MAIN_DIR/SAVE" "$COMMONDIR/../.saves/$GAMENAME"
 if [[ -d "$MAIN_DIR/crosshair" ]];     then rm -rf "$MAIN_DIR/crosshair";  fi; ln -s "$COMMONDIR/../.util/crosshair" "$MAIN_DIR/crosshair"
 if [[ -d "$GAMEROOT/ihud" ]];          then rm -rf "$GAMEROOT/ihud";       fi; ln -s "$COMMONDIR/../.util/ihud" "$GAMEROOT/ihud"
-if [[ -d "$GAMEROOT/tas" ]];           then mv "$GAMEROOT/tas/"*           "$COMMONDIR/.tas/$GAMENAME_RAW"; rm -rf "$GAMEROOT/tas";           fi; ln -s "$COMMONDIR/.tas/$GAMENAME_RAW" "$GAMEROOT/tas"
-if [[ -d "$GAMEROOT/crash_reports" ]]; then mv "$GAMEROOT/crash_reports/"* "$COMMONDIR/.crash_reports";     rm -rf "$GAMEROOT/crash_reports"; fi; ln -s "$COMMONDIR/.crash_reports"     "$GAMEROOT/crash_reports"
-if [[ -d "$MAIN_DIR/demos" ]];         then mv "$MAIN_DIR/demos/"*         "$COMMONDIR/.demos/$GAMENAME";   rm -rf "$MAIN_DIR/demos";         fi; ln -s "$COMMONDIR/.demos/$GAMENAME"   "$MAIN_DIR/demos"
+if [[ -d "$GAMEROOT/tas" ]];           then mv "$GAMEROOT/tas/"*           "$COMMONDIR/../.tas/$GAMENAME_RAW"; rm -rf "$GAMEROOT/tas";           fi; ln -s "$COMMONDIR/../.tas/$GAMENAME_RAW" "$GAMEROOT/tas"
+if [[ -d "$GAMEROOT/crash_reports" ]]; then mv "$GAMEROOT/crash_reports/"* "$COMMONDIR/../.crash_reports";     rm -rf "$GAMEROOT/crash_reports"; fi; ln -s "$COMMONDIR/../.crash_reports"     "$GAMEROOT/crash_reports"
+if [[ -d "$MAIN_DIR/demos" ]];         then mv "$MAIN_DIR/demos/"*         "$COMMONDIR/../.demos/$GAMENAME";   rm -rf "$MAIN_DIR/demos";         fi; ln -s "$COMMONDIR/../.demos/$GAMENAME"   "$MAIN_DIR/demos"
 if [[ -f "$MAIN_DIR/console.log" ]];   then rm -f "$MAIN_DIR/console.log"; fi; ln -s "$COMMONDIR/p2console.log" "$MAIN_DIR/console.log"
 if [[ -f "$GAMEROOT/svars_persist" ]]; then mv -f "$GAMEROOT/svars_persist" "$COMMONDIR"; fi; ln -s "$COMMONDIR/svars_persist" "$GAMEROOT/svars_persist"
 
