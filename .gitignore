@@ -1,8 +1,10 @@
 p2c/Autoreset/*
 p2c/cfg/*
 p2c/tas/*
+p2c/sound/*
 Configs/*
-Custom/*
+*Custom/*
+pcolors*
 extra-args.txt
 steam-location.txt
 srconfigs.txt
