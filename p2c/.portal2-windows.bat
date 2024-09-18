@@ -2,12 +2,15 @@
 cls
 
 set "COMMONDIR=%~dp0"
+if "%COMMONDIR:~-1%" == "\" set "COMMONDIR=%COMMONDIR:~0,-1%"
 set "GAMEROOT=%CD%"
+if "%GAMEROOT:~-1%" == "\" set "GAMEROOT=%GAMEROOT:~0,-1%"
+if "%GAMEROOT:~-4%" == "\bin" set "GAMEROOT=%GAMEROOT:~0,-4%"
 set "GAMEPATH=%GAMEROOT%"
 set "GAMEEXE=%~1"
-for /F "delims=" %%i in ("%CD%") do set "GAMENAME=%%~ni"
-if "%COMMONDIR:~-1%" == "\" set "COMMONDIR=%COMMONDIR:~0,-1%"
-if "%GAMEROOT:~-1%" == "\" set "GAMEROOT=%GAMEROOT:~0,-1%"
+for /F "delims=" %%i in ("%GAMEEXE%") do set "EXENAME=%%~ni"
+if "%EXENAME:~-4%" == ".exe" set "EXENAME=%EXENAME:~0,-4%"
+for /F "delims=" %%i in ("%GAMEROOT%") do set "GAMENAME=%%~ni"
 set "SRCONFIGS="
 if exist "%COMMONDIR%/srconfigs.txt" set /P SRCONFIGS=<"%COMMONDIR%/srconfigs.txt"
 call :fixgamename
@@ -16,10 +19,11 @@ goto n
 :fixgamename
 if "%GAMENAME%" == "aperture_ireland" set "GAMENAME=Aperture Ireland"
 if "%GAMENAME%" == "aperturetag" set "GAMENAME=Aperture Tag"
+if "%GAMENAME%" == "infra" set "GAMENAME=INFRA"
 exit /B
 
 :n
-set "GAMEARG=portal2"
+set "GAMEARG=%EXENAME%"
 set "EXTRA_ARGS=-novid +mat_motion_blur_enabled 0 -console -vulkan"
 setlocal enabledelayedexpansion
 if exist "%COMMONDIR%\extra-args.txt" (
@@ -51,6 +55,10 @@ for %%a in (%*) do (
     )
 )
 endlocal & set "GAMENAME=%GAMENAME%" & set "GAMEARG=%GAMEARG%" & set "GAMEPATH=%GAMEPATH%" & set "EXTRA_ARGS=%EXTRA_ARGS%"
+
+if not exist "%GAMEARG%" (
+    set "GAMEARG="
+)
 
 mkdir "%COMMONDIR%\..\.dirs"
 rmdir "%COMMONDIR%\..\.dirs\%GAMENAME%" & mklink /J "%COMMONDIR%\..\.dirs\%GAMENAME%" "%GAMEPATH%"

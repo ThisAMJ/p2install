@@ -3,14 +3,15 @@ clear
 
 COMMONDIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 GAMEROOT="$PWD"
+GAMEROOT="${GAMEROOT%/}"
+GAMEROOT="${GAMEROOT%/bin}"
 GAMEPATH="$GAMEROOT"
-GAMENAME=$(basename "$PWD")
-GAMENAME_RAW=$GAMENAME
-GAMENAMEROOT_RAW="$GAMEROOT"
+GAMENAME=$(basename "$GAMEROOT")
 
 fixgamename() {
 	if [[ "$GAMENAME" == "aperture_ireland" ]]; then GAMENAME="Aperture Ireland"; fi
 	if [[ "$GAMENAME" == "mebuild05" ]]; then GAMENAME="Mind Escape"; fi
+	if [[ "$GAMENAME" == "infra" ]]; then GAMENAME="INFRA"; fi
 }
 fixgamename
 
@@ -62,6 +63,9 @@ if [[ ! -f "$GAMEEXE" ]]; then
 fi
 
 GAMEEXE=$(basename "$GAMEEXE")
+EXENAME="${GAMEEXE%.sh}"
+EXENAME="${GAMEEXE%.exe}"
+EXENAME="${GAMEEXE%_linux}"
 
 STEAM="$HOME/.steam/steam"
 if [[ -f "$COMMONDIR/steam-location.txt" ]]; then
@@ -77,7 +81,7 @@ if ! [[ -d "$STEAM" ]]; then
 	exit 1
 fi
 
-GAMEARG="portal2"
+GAMEARG=$EXENAME
 EXTRA_ARGS="-novid +mat_motion_blur_enabled 0 -console"
 if [[ -f "$COMMONDIR/extra-args.txt" ]]; then
 	EXTRA_ARGS="$(cat "$COMMONDIR/extra-args.txt")"
@@ -113,6 +117,11 @@ for var in "$@"; do
 	fi
 	((ARGIDX++))
 done
+
+# Remove gamearg if invalid
+if ! [[ -d "$GAMEARG" ]]; then
+	GAMEARG=""
+fi
 
 # Ensure GAMEEXE makes sense
 if [[ "$GAMEEXE" == *".sh" ]]; then GAMEEXE="${GAMEEXE::-3}"; fi
@@ -167,13 +176,13 @@ done < "$GAMEARG/gameinfo.txt"
 # Make symlinks to the game's directories for convenience and install things
 # Debatable whether svars should be common
 mkdir -p "$COMMONDIR/../.dirs"; rm -f "$COMMONDIR/../.dirs/$GAMENAME"; ln -s "$GAMEPATH" "$COMMONDIR/../.dirs/$GAMENAME"
-mkdir -p "$COMMONDIR/tas/$GAMENAME_RAW"
+mkdir -p "$COMMONDIR/tas/$GAMENAME"
 mkdir -p "$COMMONDIR/../.crash_reports"
 mkdir -p "$COMMONDIR/../.demos/$GAMENAME"
 mkdir -p "$COMMONDIR/../.saves"; rm -f "$COMMONDIR/../.saves/$GAMENAME"; ln -s "$MAIN_DIR/SAVE" "$COMMONDIR/../.saves/$GAMENAME"
 if [[ -d "$MAIN_DIR/crosshair" ]];     then rm -rf "$MAIN_DIR/crosshair";  fi; ln -s "$COMMONDIR/../.util/crosshair" "$MAIN_DIR/crosshair"
 if [[ -d "$GAMEROOT/ihud" ]];          then rm -rf "$GAMEROOT/ihud";       fi; ln -s "$COMMONDIR/../.util/ihud" "$GAMEROOT/ihud"
-if [[ -d "$GAMEROOT/tas" ]];           then mv "$GAMEROOT/tas/"*           "$COMMONDIR/../.tas/$GAMENAME_RAW"; rm -rf "$GAMEROOT/tas";           fi; ln -s "$COMMONDIR/../.tas/$GAMENAME_RAW" "$GAMEROOT/tas"
+if [[ -d "$GAMEROOT/tas" ]];           then mv "$GAMEROOT/tas/"*           "$COMMONDIR/../.tas/$GAMENAME"; rm -rf "$GAMEROOT/tas";           fi; ln -s "$COMMONDIR/../.tas/$GAMENAME_RAW" "$GAMEROOT/tas"
 if [[ -d "$GAMEROOT/crash_reports" ]]; then mv "$GAMEROOT/crash_reports/"* "$COMMONDIR/../.crash_reports";     rm -rf "$GAMEROOT/crash_reports"; fi; ln -s "$COMMONDIR/../.crash_reports"     "$GAMEROOT/crash_reports"
 if [[ -d "$MAIN_DIR/demos" ]];         then mv "$MAIN_DIR/demos/"*         "$COMMONDIR/../.demos/$GAMENAME";   rm -rf "$MAIN_DIR/demos";         fi; ln -s "$COMMONDIR/../.demos/$GAMENAME"   "$MAIN_DIR/demos"
 if [[ -f "$MAIN_DIR/console.log" ]];   then rm -f "$MAIN_DIR/console.log"; fi; ln -s "$COMMONDIR/p2console.log" "$MAIN_DIR/console.log"

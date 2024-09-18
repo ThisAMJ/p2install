@@ -1,0 +1,23 @@
+"GameInfo"
+{
+    game        "The Beginner's Guide"
+    title       "The Beginner's Guide"
+    GameData	"portal2.fgd"
+    gamelogo    1
+ 
+    SupportsDX8     0
+    SupportsXbox360 1
+ 
+    FileSystem
+    {
+        SteamAppId				303210
+        ToolsAppId				211     
+ 
+        SearchPaths
+        {
+            Game                |gameinfo_path|.
+            Game                theauthor
+            Game                "COMMONDIRGOESHERE"
+        }
+    }
+}
