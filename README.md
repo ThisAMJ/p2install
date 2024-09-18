@@ -31,7 +31,7 @@ Credit goes to [@mlugg] for the original Linux script this has been adapted from
 Support is not guaranteed for listed games.
 
 Windows `%command%` is generally:
-> "**[path to]**\\common\\**[game]**\\portal2.exe" **[args]**
+> "**[path to]**\\common\\**[game]**\\**[gameexec]**" **[args]**
 
 Linux `%command%` is generally:
 > "**[path to]**/Steam/ubuntu12_32/reaper" SteamLaunch AppId=**[appid]** -- "**[path to]**/Steam/ubuntu12_32/steam-launch-wrapper" -- "**[path to]**/common/**[game]**/**[gameexec]**" **[args]**
