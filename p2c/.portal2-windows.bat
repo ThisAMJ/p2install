@@ -56,8 +56,10 @@ for %%a in (%*) do (
 )
 endlocal & set "GAMENAME=%GAMENAME%" & set "GAMEARG=%GAMEARG%" & set "GAMEPATH=%GAMEPATH%" & set "EXTRA_ARGS=%EXTRA_ARGS%"
 
-if not exist "%GAMEARG%" (
-    set "GAMEARG="
+if not exist "%GAMEROOT%\%GAMEARG%\" (
+    if not exist "%GAMEARG%\" (
+        set "GAMEARG="
+    )
 )
 
 mkdir "%COMMONDIR%\..\.dirs"
