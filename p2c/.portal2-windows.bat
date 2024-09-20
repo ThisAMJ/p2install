@@ -1,6 +1,8 @@
 @echo off
 cls
 
+set "DEBUG=0"
+
 set "COMMONDIR=%~dp0"
 if "%COMMONDIR:~-1%" == "\" set "COMMONDIR=%COMMONDIR:~0,-1%"
 set "GAMEROOT=%CD%"
@@ -194,3 +196,14 @@ echo    COMMONDIR: %COMMONDIR% >> "%COMMONDIR%/p2install.log"
 echo.>> "%COMMONDIR%/p2install.log"
 
 START "" "%GAMEEXE%" -game "%GAMEARG%" %EXTRA_ARGS%
+
+for /f "tokens=2" %%a in ('tasklist /nh /fi "imagename eq %EXENAME%.exe"') do set "PID=%%a"
+if "%DEBUG%" == "1" (
+    if defined PID if "%PID%" neq "" (
+        echo Attaching WinDBG to %EXENAME%.exe with PID %PID% >> "%COMMONDIR%/p2install.log"
+        start /max windbgx -g -G -p %PID%
+    ) else (
+        echo Could not find PID for %EXENAME%.exe >> "%COMMONDIR%/p2install.log"
+    )
+    echo.>> "%COMMONDIR%/p2install.log"
+)

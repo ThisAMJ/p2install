@@ -1,6 +1,8 @@
 #!/bin/bash
 clear
 
+DEBUG=0
+
 COMMONDIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 GAMEROOT="$PWD"
 GAMEROOT="${GAMEROOT%/}"
@@ -267,6 +269,10 @@ cd "$GAMEROOT"
 
 if [[ "$WINDOWS" -eq 1 ]]; then
 	"$GAMEROOT/$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
+
+	if [[ "$DEBUG" -eq 1 ]]; then
+		gdb -p $(pgrep -f "$GAMEEXE")
+	fi
 	exit $ERRORLEVEL
 elif [[ "$LINUX" -eq 1 ]]; then
 
