@@ -193,6 +193,7 @@ echo INITIAL_ARGS: %* >> "%COMMONDIR%/p2install.log"
 echo   EXTRA_ARGS: %EXTRA_ARGS% >> "%COMMONDIR%/p2install.log"
 echo     GAMENAME: %GAMENAME% >> "%COMMONDIR%/p2install.log"
 echo    COMMONDIR: %COMMONDIR% >> "%COMMONDIR%/p2install.log"
+echo   FINAL_ARGS: "%GAMEEXE%" -game "%GAMEARG%" %EXTRA_ARGS% >> "%COMMONDIR%/p2install.log"
 echo.>> "%COMMONDIR%/p2install.log"
 
 START "" "%GAMEEXE%" -game "%GAMEARG%" %EXTRA_ARGS%

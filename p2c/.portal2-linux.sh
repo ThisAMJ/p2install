@@ -263,6 +263,7 @@ echo "INITIAL_ARGS: $@" >> "$COMMONDIR/p2install.log"
 echo "  EXTRA_ARGS: $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
 echo "    GAMENAME: $GAMENAME (PROTON $PROTON)" >> "$COMMONDIR/p2install.log"
 echo "   COMMONDIR: $COMMONDIR" >> "$COMMONDIR/p2install.log"
+echo "  FINAL_ARGS: \"$GAMEROOT/$GAMEEXE\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
 echo "" >> "$COMMONDIR/p2install.log"
 
 cd "$GAMEROOT"
