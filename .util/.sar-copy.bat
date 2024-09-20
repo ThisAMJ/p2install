@@ -9,11 +9,13 @@ SET "COMMONDIR=%COMMONDIR%\..\p2c"
 SET "binary=sar.dll"
 SET "src=bin\%binary%"
 
+set "KILL=1" &:: Kill existing processes and relaunch
 set "COPY=0" &:: Copy instead of move
 cd ..
 goto install
 
 :killtask
+if "%KILL%"=="0" exit /B 0
 tasklist /fi "ImageName eq %1" /fo csv 2>NUL | find /I "%1">NUL
 if "%ERRORLEVEL%"=="0" (
     taskkill /IM %1 /F >NUL
@@ -54,5 +56,10 @@ if %KILLED% GTR 0 (
     ping 127.0.0.1 -n 2 > NUL
 )
 
-echo SAR built and installed! Restarting the game (appid %appid%)...
-start "" "steam://rungameid/%appid%"
+echo SAR built and installed!
+if "%KILL%"=="1" (
+    echo Restarting the game ^(appid %appid%^)...
+    start "" "steam://rungameid/%appid%"
+) else (
+    echo Done!
+)
