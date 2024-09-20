@@ -20,6 +20,7 @@ goto n
 if "%GAMENAME%" == "aperture_ireland" set "GAMENAME=Aperture Ireland"
 if "%GAMENAME%" == "aperturetag" set "GAMENAME=Aperture Tag"
 if "%GAMENAME%" == "infra" set "GAMENAME=INFRA"
+if "%GAMENAME%" == "left 4 dead" set "GAMENAME=Left 4 Dead"
 exit /B
 
 :n
