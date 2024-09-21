@@ -9,6 +9,10 @@ GAMEROOT="${GAMEROOT%/}"
 GAMEROOT="${GAMEROOT%/bin}"
 GAMEPATH="$GAMEROOT"
 GAMENAME=$(basename "$GAMEROOT")
+SRCONFIGS=""
+if [[ -f "$COMMONDIR/srconfigs.txt" ]]; then
+	SRCONFIGS=$(cat "$COMMONDIR/srconfigs.txt")
+fi
 
 fixgamename() {
 	if [[ "$GAMENAME" == "aperture_ireland" ]]; then GAMENAME="Aperture Ireland"; fi
@@ -67,13 +71,14 @@ fi
 
 GAMEEXE=$(basename "$GAMEEXE")
 EXENAME="${GAMEEXE%.sh}"
-EXENAME="${GAMEEXE%.exe}"
-EXENAME="${GAMEEXE%_linux}"
+EXENAME="${EXENAME%.exe}"
+EXENAME="${EXENAME%_linux}"
 
 STEAM="$HOME/.steam/steam"
 if [[ -f "$COMMONDIR/steam-location.txt" ]]; then
 	STEAM="$(cat "$COMMONDIR/steam-location.txt")"
 fi
+if ! [[ -d "$STEAM" ]]; then STEAM="$HOME/.steam/steam"; fi
 if ! [[ -d "$STEAM" ]]; then STEAM="$HOME/.local/share/Steam"; fi
 if ! [[ -d "$STEAM" ]]; then STEAM="$(printenv "ProgramFiles(x86)")/Steam"; fi
 if ! [[ -d "$STEAM" ]]; then
@@ -87,14 +92,16 @@ fi
 GAMEARG=$EXENAME
 EXTRA_ARGS="-novid +mat_motion_blur_enabled 0 -console"
 if [[ -f "$COMMONDIR/extra-args.txt" ]]; then
-	EXTRA_ARGS="$(cat "$COMMONDIR/extra-args.txt")"
+	EXTRA_ARGS="$EXTRA_ARGS $(cat "$COMMONDIR/extra-args.txt")"
 fi
 
 # Vulkan seems to crash Mel, Reloaded, and Aptag upon launch
 EXTRA_ARGS="$(echo "$EXTRA_ARGS" | sed 's/-vulkan//g')" # The user doesn't do this, let us
 VULKAN=1
 if [[ "$LINUX" -eq 1 ]]; then
-	if [[ "$GAMENAME" == "Portal Stories Mel" || "$GAMENAME" == "Portal Reloaded" || "$GAMENAME" == "Aperture Tag" ]]; then VULKAN=0; fi
+	if [[ "$GAMENAME" == "Portal Stories Mel" ]]; then VULKAN=0; fi
+	if [[ "$GAMENAME" == "Portal Reloaded" ]]; then VULKAN=0; fi
+	if [[ "$GAMENAME" == "Aperture Tag" ]]; then VULKAN=0; fi
 fi
 if [[ "$VULKAN" -eq 1 ]]; then EXTRA_ARGS="$EXTRA_ARGS -vulkan"; fi
 
@@ -147,8 +154,10 @@ if [[ -f "$COMMONDIR/../.util/gameinfo/$GAMENAME.txt" ]]; then
 	ESCAPED_GAMEROOT=$(printf '%s\n' "$GAMEROOT" | sed -e 's/[\/&]/\\&/g')
 	ESCAPED_COMMONDIR=$(printf '%s\n' "$COMMONDIR" | sed -e 's/[\/&]/\\&/g')
 	ESCAPED_P2PATH=$(printf '%s\n' "$P2PATH" | sed -e 's/[\/&]/\\&/g')
+	ESCAPED_SRCONFIGS=$(printf '%s\n' "$SRCONFIGS" | sed -e 's/[\/&]/\\&/g')
 	cp -f  "$COMMONDIR/../.util/gameinfo/$GAMENAME.txt" "$GAMEARG/gameinfo.txt"
 	sed -i "s/GAMEROOTGOESHERE/$ESCAPED_GAMEROOT/"   "$GAMEARG/gameinfo.txt"
+	sed -i "s/COMMONDIRGOESHERE/COMMONDIRGOESHERE\"\nGame \"$ESCAPED_SRCONFIGS/" "$GAMEARG/gameinfo.txt"
 	sed -i "s/COMMONDIRGOESHERE/$ESCAPED_COMMONDIR/" "$GAMEARG/gameinfo.txt"
 	sed -i "s/P2PATHGOESHERE/$ESCAPED_P2PATH/"       "$GAMEARG/gameinfo.txt"
 fi
@@ -165,11 +174,17 @@ while read -r line; do
 		line=$(echo "$line" | sed -e 's/\/\.\//\//g')
 		line=$(cd "$line" && pwd)
 		if [[ "$MAIN_DIR" == "" ]]; then MAIN_DIR="$line"; fi
-		if [[ "$line" != "$COMMONDIR" ]]; then
+		if [[ "$line" != "$COMMONDIR" && "$line" != "$SRCONFIGS" ]]; then
 			for commonCfg in "$COMMONDIR/cfg/"*; do
 				if [[ -f "$line/cfg/$(basename "$commonCfg")" ]]; then
-					mkdir -p "$line/cfg/.p2-common-backup"
-					mv -f "$line/cfg/$(basename "$commonCfg")" "$line/cfg/.p2-common-backup/$(basename "$commonCfg")"
+					mkdir -p "$line/cfg/.p2install-backup"
+					mv -f "$line/cfg/$(basename "$commonCfg")" "$line/cfg/.p2install-backup/$(basename "$commonCfg")"
+				fi
+			done
+			for srconfCfg in "$SRCONFIGS/cfg/"*; do
+				if [[ -f "$line/cfg/$(basename "$srconfCfg")" ]]; then
+					mkdir -p "$line/cfg/.p2install-backup"
+					mv -f "$line/cfg/$(basename "$srconfCfg")" "$line/cfg/.p2install-backup/$(basename "$srconfCfg")"
 				fi
 			done
 		fi
@@ -179,17 +194,6 @@ done < "$GAMEARG/gameinfo.txt"
 # Make symlinks to the game's directories for convenience and install things
 # Debatable whether svars should be common
 mkdir -p "$COMMONDIR/../.dirs"; rm -f "$COMMONDIR/../.dirs/$GAMENAME"; ln -s "$GAMEPATH" "$COMMONDIR/../.dirs/$GAMENAME"
-mkdir -p "$COMMONDIR/tas/$GAMENAME"
-mkdir -p "$COMMONDIR/../.crash_reports"
-mkdir -p "$COMMONDIR/../.demos/$GAMENAME"
-mkdir -p "$COMMONDIR/../.saves"; rm -f "$COMMONDIR/../.saves/$GAMENAME"; ln -s "$MAIN_DIR/SAVE" "$COMMONDIR/../.saves/$GAMENAME"
-if [[ -d "$MAIN_DIR/crosshair" ]];     then rm -rf "$MAIN_DIR/crosshair";  fi; ln -s "$COMMONDIR/../.util/crosshair" "$MAIN_DIR/crosshair"
-if [[ -d "$GAMEROOT/ihud" ]];          then rm -rf "$GAMEROOT/ihud";       fi; ln -s "$COMMONDIR/../.util/ihud" "$GAMEROOT/ihud"
-if [[ -d "$GAMEROOT/tas" ]];           then mv "$GAMEROOT/tas/"*           "$COMMONDIR/../.tas/$GAMENAME"; rm -rf "$GAMEROOT/tas";           fi; ln -s "$COMMONDIR/../.tas/$GAMENAME_RAW" "$GAMEROOT/tas"
-if [[ -d "$GAMEROOT/crash_reports" ]]; then mv "$GAMEROOT/crash_reports/"* "$COMMONDIR/../.crash_reports";     rm -rf "$GAMEROOT/crash_reports"; fi; ln -s "$COMMONDIR/../.crash_reports"     "$GAMEROOT/crash_reports"
-if [[ -d "$MAIN_DIR/demos" ]];         then mv "$MAIN_DIR/demos/"*         "$COMMONDIR/../.demos/$GAMENAME";   rm -rf "$MAIN_DIR/demos";         fi; ln -s "$COMMONDIR/../.demos/$GAMENAME"   "$MAIN_DIR/demos"
-if [[ -f "$MAIN_DIR/console.log" ]];   then rm -f "$MAIN_DIR/console.log"; fi; ln -s "$COMMONDIR/p2console.log" "$MAIN_DIR/console.log"
-if [[ -f "$GAMEROOT/svars_persist" ]]; then mv -f "$GAMEROOT/svars_persist" "$COMMONDIR"; fi; ln -s "$COMMONDIR/svars_persist" "$GAMEROOT/svars_persist"
 
 # platform.cfg
 echo "svar_set gameplatform $PLATFORM"            > "$COMMONDIR/cfg/platform.cfg"
@@ -229,6 +233,11 @@ if [[ -d "$COMMONDIR/../.util/srmods/$GAMENAME" ]]; then
 	cp -fr "$COMMONDIR/../.util/srmods/$GAMENAME/"* "$MAIN_DIR"
 fi
 
+# if the game folder contains steam_appid.txt, copy to common/.util/.sar-appid.txt
+if [[ -f "$GAMEROOT/steam_appid.txt" ]]; then
+	cp -f "$GAMEROOT/steam_appid.txt" "$COMMONDIR/../.util/.sar-appid.txt"
+fi
+
 if [[ "$LINUX" -eq 1 ]]; then
 	STEAM_RT="$STEAM/ubuntu12_32/steam-runtime"
 	REAPER="$STEAM_RT/../reaper"
@@ -263,27 +272,32 @@ echo "INITIAL_ARGS: $@" >> "$COMMONDIR/p2install.log"
 echo "  EXTRA_ARGS: $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
 echo "    GAMENAME: $GAMENAME (PROTON $PROTON)" >> "$COMMONDIR/p2install.log"
 echo "   COMMONDIR: $COMMONDIR" >> "$COMMONDIR/p2install.log"
-echo "  FINAL_ARGS: \"$GAMEROOT/$GAMEEXE\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
+echo "  FINAL_ARGS: \"./$GAMEEXE\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
 echo "" >> "$COMMONDIR/p2install.log"
 
 cd "$GAMEROOT"
 
 if [[ "$WINDOWS" -eq 1 ]]; then
-	"$GAMEROOT/$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
+	"./$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
 
-	if [[ "$DEBUG" -eq 1 ]]; then
-		gdb -p $(pgrep -f "$GAMEEXE")
-	fi
 	exit $ERRORLEVEL
 elif [[ "$LINUX" -eq 1 ]]; then
 
 	STATUS=42
 	while [ $STATUS -eq 42 ]; do
 		if [[ "$PROTON" == 1 ]]; then
-			"$REAPER" SteamLaunch "$3" -- "$5" -- "$7" --verb=waitforexitandrun -- "${10}" waitforexitandrun "$GAMEROOT/$GAMEEXE" "" -game "$GAMEARG" $EXTRA_ARGS
+			echo "FULL BOI ARGS: \"$REAPER\" SteamLaunch \"$3\" -- \"$5\" -- \"$7\" --verb=waitforexitandrun -- \"${10}\" waitforexitandrun \"./$GAMEEXE\" \"\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
+			echo "" >> "$COMMONDIR/p2install.log"
+			"$REAPER" SteamLaunch "$3" -- "$5" -- "$7" --verb=waitforexitandrun -- "${10}" waitforexitandrun "./$GAMEEXE" "" -game "$GAMEARG" $EXTRA_ARGS
 		else
 			ulimit -n 2048 # Limit the game to at most 2048 files open at once (why?)
-			"$REAPER" SteamLaunch "$3" -- $GAME_DEBUGGER "$GAMEROOT/$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
+			echo "FULL BOI ARGS: \"$REAPER\" SteamLaunch \"$3\" -- \"./$GAMEEXE\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
+			echo "" >> "$COMMONDIR/p2install.log"
+			"$REAPER" SteamLaunch "$3" -- $GAME_DEBUGGER "./$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
+
+			if [[ "$DEBUG" -eq 1 ]]; then
+				gdb -p $(pgrep "$GAMEEXE")
+			fi
 		fi
 		STATUS=$?
 	done
