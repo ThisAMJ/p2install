@@ -295,9 +295,9 @@ elif [[ "$LINUX" -eq 1 ]]; then
 			echo "" >> "$COMMONDIR/p2install.log"
 			"$REAPER" SteamLaunch "$3" -- $GAME_DEBUGGER "./$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
 
-			if [[ "$DEBUG" -eq 1 ]]; then
-				gdb -p $(pgrep "$GAMEEXE")
-			fi
+			# if [[ "$DEBUG" -eq 1 ]]; then
+			# 	gdb -p $(pgrep "$GAMEEXE")
+			# fi
 		fi
 		STATUS=$?
 	done

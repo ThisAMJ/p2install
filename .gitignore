@@ -17,7 +17,6 @@ svars_persist*
 autosubmit_key.txt
 autosubmit.key
 */.sar-appid.txt
-*/.sar-config.mk
 */.smsm-config.mk
 *cvars*
 bruteforcing.bat
