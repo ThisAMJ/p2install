@@ -7,7 +7,7 @@ Configs/*
 pcolors*
 extra-args.txt
 steam-location.txt
-srconfigs.txt
+srconfigs*.txt
 sar.*
 .crash_reports/*
 .demos/*

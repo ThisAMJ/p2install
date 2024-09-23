@@ -57,7 +57,11 @@ if [[ "$7" == *"/common/SteamLinuxRuntime"* ]]; then
 	PROTON=1
 	GAMEEXE="${12}"
 fi
-
+if [[ "$PLATFORM" == "Linux" ]]; then
+	if [[ -f "$COMMONDIR/srconfigs-linux.txt" ]]; then
+		SRCONFIGS=$(cat "$COMMONDIR/srconfigs-linux.txt")
+	fi
+fi
 if [[ ! -f "$GAMEEXE" ]]; then
 	echo "Malformed launch command: $@" >> "$COMMONDIR/p2install.log"
 	echo "Launch option should be in the form of:" >> "$COMMONDIR/p2install.log"

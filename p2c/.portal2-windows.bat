@@ -14,7 +14,12 @@ for /F "delims=" %%i in ("%GAMEEXE%") do set "EXENAME=%%~ni"
 if "%EXENAME:~-4%" == ".exe" set "EXENAME=%EXENAME:~0,-4%"
 for /F "delims=" %%i in ("%GAMEROOT%") do set "GAMENAME=%%~ni"
 set "SRCONFIGS="
-if exist "%COMMONDIR%/srconfigs.txt" set /P SRCONFIGS=<"%COMMONDIR%/srconfigs.txt"
+if exist "%COMMONDIR%/srconfigs.txt" (
+    set /P SRCONFIGS=<"%COMMONDIR%/srconfigs.txt"
+)
+if exist "%COMMONDIR%/srconfigs-windows.txt" (
+    set /P SRCONFIGS=<"%COMMONDIR%/srconfigs-windows.txt"
+)
 call :fixgamename
 goto n
 
