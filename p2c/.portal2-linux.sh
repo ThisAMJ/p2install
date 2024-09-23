@@ -273,12 +273,12 @@ if [[ "$LINUX" -eq 1 ]]; then
 	fi
 fi
 
-echo "    PLATFORM: $PLATFORM" >> "$COMMONDIR/p2install.log"
+echo "    PLATFORM: $PLATFORM (PROTON $PROTON)" >> "$COMMONDIR/p2install.log"
 echo "    GAMEROOT: $GAMEROOT (GAME $GAMEARG)" >> "$COMMONDIR/p2install.log"
 echo "     GAMEEXE: $GAMEEXE" >> "$COMMONDIR/p2install.log"
 echo "INITIAL_ARGS: $@" >> "$COMMONDIR/p2install.log"
 echo "  EXTRA_ARGS: $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
-echo "    GAMENAME: $GAMENAME (PROTON $PROTON)" >> "$COMMONDIR/p2install.log"
+echo "    GAMENAME: $GAMENAME" >> "$COMMONDIR/p2install.log"
 echo "   COMMONDIR: $COMMONDIR" >> "$COMMONDIR/p2install.log"
 echo "  FINAL_ARGS: \"./$GAMEEXE\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
 echo "" >> "$COMMONDIR/p2install.log"
