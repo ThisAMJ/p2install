@@ -176,7 +176,13 @@ endlocal & set "MAIN_DIR=%MAIN_DIR%"
 
 if not exist "%COMMONDIR%\cfg\" mkdir "%COMMONDIR%\cfg"
 
-if exist "steam_appid.txt" copy /Y "steam_appid.txt" "%COMMONDIR%\..\.util\.sar-appid.txt"
+if exist "steam_appid.txt" (
+    copy /Y "steam_appid.txt" "%COMMONDIR%\..\.util\.sar-appid.txt"
+    if "%GAMENAME%" == "Thinking with Time Machine" (
+        @REM TWTM's steam_appid.txt says 620, but it's actually 286080
+        echo 286080 > "%COMMONDIR%\..\.util\.sar-appid.txt"
+    )
+)
 
 :: TODO: Pack VPKs for DLCs
 :: TODO: .util/saves/%GAMENAME% (same for maps)

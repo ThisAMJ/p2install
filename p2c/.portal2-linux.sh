@@ -240,6 +240,10 @@ fi
 # if the game folder contains steam_appid.txt, copy to common/.util/.sar-appid.txt
 if [[ -f "$GAMEROOT/steam_appid.txt" ]]; then
 	cp -f "$GAMEROOT/steam_appid.txt" "$COMMONDIR/../.util/.sar-appid.txt"
+	if [[ "$GAMENAME" == "Thinking with Time Machine" ]]; then
+		# TWTM's steam_appid.txt says 620, but it's actually 286080
+		echo "286080" > "$COMMONDIR/../.util/.sar-appid.txt"
+	fi
 fi
 
 if [[ "$LINUX" -eq 1 ]]; then
