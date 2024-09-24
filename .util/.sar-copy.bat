@@ -18,7 +18,7 @@ goto install
 if "%KILL%"=="0" exit /B 0
 tasklist /fi "ImageName eq %1" /fo csv 2>NUL | find /I "%1">NUL
 if "%ERRORLEVEL%"=="0" (
-    taskkill /IM %1 /F >NUL
+    taskkill /IM %1 /F >NUL 2>&1
     set /A KILLED+=1
     echo.	 %1
 )

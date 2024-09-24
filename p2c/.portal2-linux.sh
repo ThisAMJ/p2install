@@ -142,7 +142,9 @@ if [[ "$GAMEEXE" == *".sh" ]]; then GAMEEXE="${GAMEEXE::-3}"; fi
 if [[ "$GAMEEXE" == *".exe" || "$GAMEEXE" == *"_osx" ]]; then GAMEEXE="${GAMEEXE::-4}"; fi
 if [[ "$GAMEEXE" == *"_linux" ]]; then GAMEEXE="${GAMEEXE::-6}"; fi
 if   [[ "$LINUX" -eq 1 && "$PROTON" -eq 0 ]]; then
-	GAMEEXE="${GAMEEXE}_linux"
+	if [[ -f "${GAMEEXE}_linux" ]]; then GAMEEXE="${GAMEEXE}_linux"
+	elif [[ -f "${GAMEEXE}.sh" ]]; then GAMEEXE="${GAMEEXE}.sh"
+	fi
 elif [[ "$MACOSX" -eq 1 ]]; then
 	GAMEEXE="${GAMEEXE}_osx"
 elif [[ "$WINDOWS" -eq 1 || "$PROTON" -eq 1 ]]; then
@@ -176,6 +178,7 @@ while read -r line; do
 		line=$(echo "$line" | sed -e 's/^Game[ \t][ \t"]*\([^"\r\n\t]*\).*$/\1/')/
 		line=$(echo "$line" | sed -e "s/|gameinfo_path|/$ESCAPED_GAMEARG\//g")
 		line=$(echo "$line" | sed -e 's/\/\.\//\//g')
+		if ! [[ -d "$line" ]]; then continue; fi
 		line=$(cd "$line" && pwd)
 		if [[ "$MAIN_DIR" == "" ]]; then MAIN_DIR="$line"; fi
 		if [[ "$line" != "$COMMONDIR" && "$line" != "$SRCONFIGS" ]]; then
@@ -216,12 +219,6 @@ while [[ -d "portal2_dlc$highest_dlc/.root" ]]; do
 	cd ..
 	((highest_dlc++))
 done
-
-# Install CM maplist and fast taunt for Portal 2
-if [[ "$GAMENAME" == "Portal 2" ]]; then
-	cp -f "$COMMONDIR/../.util/gamefile-mods/challenge_maplist.txt" "$GAMEROOT/portal2_dlc1"
-	cp -f "$COMMONDIR/../.util/gamefile-mods/scripts/talker/"* "$GAMEROOT/portal2/scripts/talker"
-fi
 
 # Install saves for any games that have them
 # Just copy into every steamid lol
