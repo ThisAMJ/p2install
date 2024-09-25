@@ -71,7 +71,9 @@ if not exist "%GAMEROOT%\%GAMEARG%\" (
 )
 
 mkdir "%COMMONDIR%\..\.dirs"
-rmdir "%COMMONDIR%\..\.dirs\%GAMENAME%" & mklink /J "%COMMONDIR%\..\.dirs\%GAMENAME%" "%GAMEPATH%"
+rmdir "%COMMONDIR%\..\.dirs\%GAMENAME%"
+del /a s "%COMMONDIR%\..\.dirs\%GAMENAME%" &:: Linux makes "system file" links
+mklink /J "%COMMONDIR%\..\.dirs\%GAMENAME%" "%GAMEPATH%"
 copy /Y "%COMMONDIR%\sar.pdb" "%GAMEROOT%"
 @REM del /Q      "%GAMEARG%\console.log"        & mklink /H "%GAMEARG%\console.log"        "%COMMONDIR%\p2console.log"
 
