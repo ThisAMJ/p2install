@@ -7,7 +7,9 @@ if "%COMMONDIR:~-1%" == "\" set "COMMONDIR=%COMMONDIR:~0,-1%"
 SET "COMMONDIR=%COMMONDIR%\..\p2c"
 
 SET "binary=sar.dll"
+SET "pdb=sar.pdb"
 SET "src=bin\%binary%"
+SET "pdbsrc=bin\%pdb%"
 
 set "KILL=1" &:: Kill existing processes and relaunch
 set "COPY=0" &:: Copy instead of move
@@ -42,9 +44,11 @@ call :killtask mm.exe             &:: Dark Messiah of Might and Magic Single-Pla
 if ("%COPY%" == "1") (
     echo Copying SAR to common directory...
     copy /Y "%src%" "%commondir%\%binary%"
+    copy /Y "%pdbsrc%" "%commondir%\%pdb%"
 ) else (
     echo Moving SAR to common directory...
     move /Y "%src%" "%commondir%\%binary%"
+    move /Y "%pdbsrc%" "%commondir%\%pdb%"
 )
 
 set /p appid=<"%commondir%\..\.util\.sar-appid.txt"
