@@ -1,7 +1,9 @@
 #!/bin/bash
 clear
 
-DEBUG=0
+DEBUG=1
+
+# todo: kill existing processes
 
 COMMONDIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 GAMEROOT="$PWD"
