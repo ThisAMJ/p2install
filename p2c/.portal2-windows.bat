@@ -1,6 +1,7 @@
 @echo off
 cls
 
+set "DEBUG=0"
 set "KILL=1"
 
 goto killtasks
