@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 
-DEBUG=1
+DEBUG=0
 
 # todo: kill existing processes
 
@@ -199,6 +199,11 @@ while read -r line; do
 		fi
 	fi
 done < "$GAMEARG/gameinfo.txt"
+
+if [[ -f "$COMMONDIR/../.util/.sar-build.txt" ]]; then
+	rm -f "$COMMONDIR/../.util/.sar-build.txt"
+	DEBUG=1
+fi
 
 # Make symlinks to the game's directories for convenience and install things
 # Debatable whether svars should be common

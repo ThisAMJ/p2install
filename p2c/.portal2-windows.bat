@@ -102,6 +102,11 @@ if not exist "%GAMEROOT%\%GAMEARG%\" (
     )
 )
 
+if exist "%COMMONDIR%\..\.util\.sar-build.txt" (
+    del /s /q "%COMMONDIR%\..\.util\.sar-build.txt"
+    set "DEBUG=1"
+)
+
 mkdir "%COMMONDIR%\..\.dirs"
 rmdir "%COMMONDIR%\..\.dirs\%GAMENAME%"
 del /a s "%COMMONDIR%\..\.dirs\%GAMENAME%" &:: Linux makes "system file" links

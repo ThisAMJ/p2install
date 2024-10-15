@@ -31,6 +31,7 @@ install: sar.so
 	if [[ -f "$(COMMONDIR)/../.util/.sar-appid.txt" ]]; then \
 		appid=$(shell cat "$(COMMONDIR)/../.util/.sar-appid.txt"); \
 	fi; \
+	touch "$(COMMONDIR)/../.util/.sar-build.txt" \
 	echo SAR built and installed!; \
 	if [ "$(KILL)" == "1" ]; then \
 		echo "Restarting the game (appid $$appid)..."; \

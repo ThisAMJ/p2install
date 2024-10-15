@@ -51,6 +51,7 @@ if ("%COPY%" == "1") (
     move /Y "%pdbsrc%" "%commondir%\%pdb%"
 )
 
+echo.> "%commondir%\..\.util\.sar-build.txt"
 set /p appid=<"%commondir%\..\.util\.sar-appid.txt"
 if "%appid%"=="" set appid=620
 
