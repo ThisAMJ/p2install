@@ -38,6 +38,7 @@ call :killtask left4dead2.exe     &:: Left 4 Dead 2
 call :killtask infra.exe          &:: INFRA
 call :killtask beginnersguide.exe &:: The Beginner's Guide
 call :killtask beginnersguide.exe &:: The Beginner's Guide Crash Handler
+call :killtask stanley.exe        &:: The Stanley Parable
 call :killtask runme.exe          &:: Dark Messiah of Might and Magic Multi-Player
 call :killtask mm.exe             &:: Dark Messiah of Might and Magic Single-Player
 

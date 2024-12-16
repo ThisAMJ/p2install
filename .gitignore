@@ -19,8 +19,13 @@ autosubmit.key
 */.sar-appid.txt
 */.smsm-config.mk
 *cvars*
+client_classes.json
+client_datamap.json
+server_classes.json
+server_datamap.json
 bruteforcing.bat
 sar-bf.dll
 sar-bf.pdb
 crosshair/*
 ihud/*
+p2install-extra.*

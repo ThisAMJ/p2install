@@ -289,6 +289,10 @@ echo "" >> "$COMMONDIR/p2install.log"
 
 cd "$GAMEROOT"
 
+if [[ -f "$COMMONDIR/cfg/p2install-extra.sh" ]]; then
+	"$COMMONDIR/cfg/p2install-extra.sh"
+fi
+
 if [[ "$WINDOWS" -eq 1 ]]; then
 	"./$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
 

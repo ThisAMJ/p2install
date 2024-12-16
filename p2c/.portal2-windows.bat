@@ -246,6 +246,10 @@ echo    COMMONDIR: %COMMONDIR% >> "%COMMONDIR%/p2install.log"
 echo   FINAL_ARGS: "%GAMEEXE%" -game "%GAMEARG%" %EXTRA_ARGS% >> "%COMMONDIR%/p2install.log"
 echo.>> "%COMMONDIR%/p2install.log"
 
+if exist "%COMMONDIR%\cfg\p2install-extra.bat" (
+    call "%COMMONDIR%\cfg\p2install-extra.bat"
+)
+
 START "" "%GAMEEXE%" -game "%GAMEARG%" %EXTRA_ARGS%
 
 for /f "tokens=2" %%a in ('tasklist /nh /fi "imagename eq %EXENAME%.exe"') do set "PID=%%a"
