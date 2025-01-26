@@ -21,6 +21,7 @@ fixgamename() {
 	if [[ "$GAMENAME" == "mebuild05" ]]; then GAMENAME="Mind Escape"; fi
 	if [[ "$GAMENAME" == "infra" ]]; then GAMENAME="INFRA"; fi
 	if [[ "$GAMENAME" == "left 4 dead" ]]; then GAMENAME="Left 4 Dead"; fi
+	if [[ "$GAMENAME" == "GarrysMod" ]]; then GAMENAME="Garrys Mod"; fi
 }
 fixgamename
 

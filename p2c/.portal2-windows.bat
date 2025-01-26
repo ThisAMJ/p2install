@@ -60,6 +60,7 @@ if "%GAMENAME%" == "aperture_ireland" set "GAMENAME=Aperture Ireland"
 if "%GAMENAME%" == "aperturetag" set "GAMENAME=Aperture Tag"
 if "%GAMENAME%" == "infra" set "GAMENAME=INFRA"
 if "%GAMENAME%" == "left 4 dead" set "GAMENAME=Left 4 Dead"
+if "%GAMENAME%" == "GarrysMod" set "GAMENAME=Garrys Mod"
 exit /B
 
 :n
@@ -95,6 +96,11 @@ for %%a in (%*) do (
     )
 )
 endlocal & set "GAMENAME=%GAMENAME%" & set "GAMEARG=%GAMEARG%" & set "GAMEPATH=%GAMEPATH%" & set "EXTRA_ARGS=%EXTRA_ARGS%"
+
+if "%GAMENAME%" == "unpack" (
+    if "%GAMEARG%" == "hl2" set "GAMENAME=Half-Life 2"
+    if "%GAMEARG%" == "portal" set "GAMENAME=Portal"
+)
 
 if not exist "%GAMEROOT%\%GAMEARG%\" (
     if not exist "%GAMEARG%\" (

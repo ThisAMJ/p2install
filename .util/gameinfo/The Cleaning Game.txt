@@ -1,0 +1,24 @@
+"GameInfo"
+{
+	game	"The Cleaning Game"
+	title	"The Cleaning Game" // As far as I can tell, these two fields are identical.
+	GameData	"portal2.fgd"	// The Cleaning Game should not require this for the most part, being a total conversion mod, however, The Cleaning Game occasionally takes advantage of Portal 2-specific engine features (such as square world portals).
+	gamelogo	1
+	icon	"resource/icon"
+	
+	FileSystem
+	{
+		SteamAppId	3281900	// The Cleaning Game's AppID
+		ToolsAppId	211	// Standard Source SDK Toolset
+
+		SearchPaths
+		{
+			Game	|gameinfo_path|.
+			Game	office_dev
+			Game	portal2
+			Game	portal2_dlc1
+			Game	portal2_dlc2
+            Game    "COMMONDIRGOESHERE"
+		}
+	}
+}
