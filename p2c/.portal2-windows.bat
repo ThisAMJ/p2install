@@ -234,6 +234,7 @@ echo svar_set windows 1             >> "%COMMONDIR%/cfg/platform.cfg"
 echo svar_set macos 0               >> "%COMMONDIR%/cfg/platform.cfg"
 echo svar_set gamearg "%GAMEARG%"   >> "%COMMONDIR%/cfg/platform.cfg"
 echo svar_set gamename "%GAMENAME%" >> "%COMMONDIR%/cfg/platform.cfg"
+echo svar_set username "%USERNAME%" >> "%COMMONDIR%/cfg/platform.cfg"
 
 echo %date% %time% >> "%COMMONDIR%/p2install.log"
 echo     PLATFORM: Windows >> "%COMMONDIR%/p2install.log"

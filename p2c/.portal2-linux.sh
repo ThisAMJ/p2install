@@ -217,6 +217,7 @@ echo "svar_set proton  $PROTON"                  >> "$COMMONDIR/cfg/platform.cfg
 echo "svar_set macos   $MACOSX"                  >> "$COMMONDIR/cfg/platform.cfg"
 echo "svar_set gamearg \"$(basename $GAMEARG)\"" >> "$COMMONDIR/cfg/platform.cfg"
 echo "svar_set gamename \"$GAMENAME\""           >> "$COMMONDIR/cfg/platform.cfg"
+echo "svar_set username \"$(whoami)\""           >> "$COMMONDIR/cfg/platform.cfg"
 
 # Pack VPKs for DLCs
 highest_dlc=3 # TODO: Is this different for any games?
