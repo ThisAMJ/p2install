@@ -18,6 +18,7 @@ autosubmit_key.txt
 autosubmit.key
 */.sar-appid.txt
 */.smsm-config.mk
+.util/.sar-build.txt
 *cvars*
 client_classes.json
 client_datamap.json

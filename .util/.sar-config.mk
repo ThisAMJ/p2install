@@ -20,6 +20,8 @@ install: sar.so
 	@echo Killing existing processes...
 	@-killall -s 9 portal2_linux 2>/dev/null || true
 	@-killall -s 9 TWTM_linux 2>/dev/null || true
+	@-killall -s 9 beginnersguide.bin 2>/dev/null || true
+	@-killall -s 9 gameoverlayui 2>/dev/null || true
 	@if [ "$(COPY)" == "1" ]; then \
 		echo Copying $(binary) to common directory...; \
 		cp -f "$(src)" "$(COMMONDIR)/$(binary)"; \
