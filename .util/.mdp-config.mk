@@ -4,7 +4,7 @@
 #  arch linux: clang mingw-w64-gcc
 #  debian: clang gcc-mingw-w64
 
-CCWIN=x86_64-w64-mingw32-gcc
+CC=gcc
 CFLAGS=-Wall -Werror
 
 SRCS=$(shell find $(SRCDIR) -name '*.c')
@@ -14,9 +14,9 @@ DEPS=$(OBJS:%.o=%.d)
 all: mdp mdp.exe
 
 # use different compilation flags for windows
-mdp.exe: $(OBJS:$(OBJDIR)/%.o=$(OBJDIR)/win-%.o)
-	$(CCWIN) $^ $(LDFLAGS) -o $@
+mdp.exe: $(OBJS:$(OBJDIR)/%.o=$(OBJDIR)/%.o)
+	$(CC) $^ $(LDFLAGS) -o $@
 
 $(OBJDIR)/win-%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
-	$(CCWIN) $(CFLAGS) -D__USE_MINGW_ANSI_STDIO -MMD -c $< -o $@
+	$(CC) $(CFLAGS) -MMD -c $< -o $@

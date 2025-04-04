@@ -1,19 +1,22 @@
 @echo off
-@REM To use, put the following in SourceAutoRecord/copy.bat
-@REM call "[path to]/p2install/.util/.sar-copy.bat"
+@REM To use, put the following in Portal2SpeedrunMod/COPY.bat
+@REM call "[path to]/p2install/.util/.smsm-copy.bat"
 
+@REM .util - p2install
 set "COMMONDIR=%~dp0"
 if "%COMMONDIR:~-1%" == "\" set "COMMONDIR=%COMMONDIR:~0,-1%"
-SET "COMMONDIR=%COMMONDIR%\..\p2c"
+set "COMMONDIR=%COMMONDIR%\.."
 
-SET "binary=sar.dll"
-SET "pdb=sar.pdb"
-SET "src=bin\%binary%"
-SET "pdbsrc=bin\%pdb%"
+SET "binary=smsm.dll"
+SET "src=smsm\bin\%binary%"
+SET "vpk=%COMMONDIR%\.dirs\Portal 2\bin\vpk.exe"
+
+set "dest=C:\Program Files (x86)\Steam\steamapps\sourcemods\Portal 2 Speedrun Mod"
+mkdir "%dest%"
 
 set "KILL=1" &:: Kill existing processes and relaunch
 set "COPY=0" &:: Copy instead of move
-cd ..
+cd ../..
 goto install
 
 :killtask
@@ -44,29 +47,37 @@ call :killtask mm.exe             &:: Dark Messiah of Might and Magic Single-Pla
 call :killtask swarm.exe          &:: Alien Swarm
 
 if ("%COPY%" == "1") (
-    echo Copying SAR to common directory...
-    copy /Y "%src%" "%commondir%\%binary%"
-    copy /Y "%pdbsrc%" "%commondir%\%pdb%"
+    echo Copying SMSM to mod directory...
+    echo copy /Y "%src%" "%dest%\%binary%"
+    copy /Y "%src%" "%dest%\%binary%"
 ) else (
-    echo Moving SAR to common directory...
-    move /Y "%src%" "%commondir%\%binary%"
-    move /Y "%pdbsrc%" "%commondir%\%pdb%"
+    echo Moving SMSM to mod directory...
+    echo move /Y "%src%" "%dest%\%binary%"
+    move /Y "%src%" "%dest%\%binary%"
 )
 
-echo.> "%commondir%\..\.util\.sar-build.txt"
-set /p appid=<"%commondir%\..\.util\.sar-appid.txt"
-if "%appid%"=="" set appid=620
+echo SMSM built and installed!
 
-if %KILLED% GTR 0 (
-    @REM Wait 200ms before launching to make sure the game is closed
-    echo Waiting for processes to fully close...
-    ping 127.0.0.1 -n 2 > NUL
-)
+echo.
+echo ====== Copying raw files... ======
+echo Copying cfg...
+xcopy /Q /E /V /Y /I "cfg" "%dest%\cfg"
+echo Copying maps...
+xcopy /Q /E /V /Y /I "maps" "%dest%\maps"
+echo Copying resource...
+xcopy /Q /E /V /Y /I "resource" "%dest%\resource"
+echo Copying scripts...
+xcopy /Q /E /V /Y /I "scripts" "%dest%\scripts"
+echo Copying media...
+xcopy /Q /E /V /Y /I "media" "%dest%\media"
+echo Copying gameinfo...
+copy /Y "gameinfo.txt" "%dest%\gameinfo.txt"
 
-echo SAR built and installed!
-if "%KILL%"=="1" (
-    echo Restarting the game ^(appid %appid%^)...
-    start "" "steam://rungameid/%appid%"
-) else (
-    echo Done!
-)
+echo.
+echo ====== Packing pak01_dir... ======
+"%vpk%" pak01_dir
+copy /Y "pak01_dir.vpk" "%dest%\pak01_dir.vpk"
+DEL pak01_dir.vpk
+
+echo Done.
+exit /B 0
