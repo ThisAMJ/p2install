@@ -263,7 +263,7 @@ for /f "tokens=2" %%a in ('tasklist /nh /fi "imagename eq %EXENAME%.exe"') do se
 if "%DEBUG%" == "1" (
     if defined PID if "%PID%" neq "" (
         echo Attaching WinDBG to %EXENAME%.exe with PID %PID% >> "%COMMONDIR%/p2install.log"
-        start /max windbgx -g -G -p %PID%
+        start /max windbgx -g -G -p %PID% -debugArch amd64
     ) else (
         echo Could not find PID for %EXENAME%.exe >> "%COMMONDIR%/p2install.log"
     )
