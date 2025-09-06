@@ -42,7 +42,7 @@ if   [[ "$PLATFORM" == *"Darwin"* ]]; then
 elif [[ "$PLATFORM" == *"Linux"* ]]; then
 	PLATFORM="Linux"
 	LINUX=1
-	GAMEEXE="$7"
+	GAMEEXE="${12}"
 elif [[ "$PLATFORM" == *"Windows"* || "$PLATFORM" == *"NT"* ]]; then
 	PLATFORM="Windows"
 	WINDOWS=1
@@ -55,7 +55,7 @@ else
 	echo "" >> "$COMMONDIR/p2install.log"
 	exit 1
 fi
-if [[ "$7" == *"/common/SteamLinuxRuntime"* ]]; then
+if [[ "$7" == *"_sniper"* ]]; then
 	PLATFORM="Proton"
 	PROTON=1
 	GAMEEXE="${12}"
@@ -129,7 +129,7 @@ for var in "$@"; do
 		ARG_COMPARE=0
 		if [[ "$WINDOWS"  -eq 1 ]]; then ARG_COMPARE=1
 		elif [[ "$PROTON" -eq 1 ]]; then ARG_COMPARE=12
-		elif [[ "$LINUX"  -eq 1 ]]; then ARG_COMPARE=7; fi
+		elif [[ "$LINUX"  -eq 1 ]]; then ARG_COMPARE=12; fi
 		if [[ "$ARGIDX" -gt "$ARG_COMPARE" ]]; then EXTRA_ARGS="$EXTRA_ARGS $var"; fi
 	fi
 	((ARGIDX++))
@@ -253,9 +253,18 @@ if [[ -f "$GAMEROOT/steam_appid.txt" ]]; then
 fi
 
 if [[ "$LINUX" -eq 1 ]]; then
-	STEAM_RT="$STEAM/ubuntu12_32/steam-runtime"
-	REAPER="$STEAM_RT/../reaper"
-	if ! [[ -f "$REAPER" ]]; then REAPER="$1"; fi
+	STEAM_BIN="$STEAM/ubuntu12_32"
+	STEAM_RT="$STEAM_BIN/steam-runtime"
+	REAPER="$STEAM_BIN/reaper"
+	WRAPPER="$STEAM_BIN/steam-launch-wrapper"
+	if ! [[ -f "$WRAPPER" ]]; then WRAPPER="$1"; fi
+	if ! [[ -f "$WRAPPER" ]]; then
+		echo ERROR! LAUNCH WRAPPER NOT FOUND AT $WRAPPER! >> "$COMMONDIR/p2install.log"
+		echo In launch of: $@ >> "$COMMONDIR/p2install.log"
+		echo "" >> "$COMMONDIR/p2install.log"
+		exit 1
+	fi
+	if ! [[ -f "$REAPER" ]]; then REAPER="$3"; fi
 	if ! [[ -f "$REAPER" ]]; then
 		echo ERROR! REAPER NOT FOUND AT $REAPER! >> "$COMMONDIR/p2install.log"
 		echo In launch of: $@ >> "$COMMONDIR/p2install.log"
@@ -304,14 +313,15 @@ elif [[ "$LINUX" -eq 1 ]]; then
 	STATUS=42
 	while [ $STATUS -eq 42 ]; do
 		if [[ "$PROTON" == 1 ]]; then
-			echo "FULL BOI ARGS: \"$REAPER\" SteamLaunch \"$3\" -- \"$5\" -- \"$7\" --verb=waitforexitandrun -- \"${10}\" waitforexitandrun \"./$GAMEEXE\" \"\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
+			echo "FULL BOI ARGS: \"$WRAPPER\" -- \"$REAPER\" SteamLaunch \"$5\" -- \"$7\" --verb=waitforexitandrun -- \"${10}\" waitforexitandrun \"./$GAMEEXE\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
 			echo "" >> "$COMMONDIR/p2install.log"
-			"$REAPER" SteamLaunch "$3" -- "$5" -- "$7" --verb=waitforexitandrun -- "${10}" waitforexitandrun "./$GAMEEXE" "" -game "$GAMEARG" $EXTRA_ARGS
+			"$WRAPPER" -- "$REAPER" SteamLaunch "$5" -- "$7" --verb=waitforexitandrun -- "${10}" waitforexitandrun "./$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
 		else
 			ulimit -n 2048 # Limit the game to at most 2048 files open at once (why?)
-			echo "FULL BOI ARGS: \"$REAPER\" SteamLaunch \"$3\" -- \"./$GAMEEXE\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
+			echo "FULL BOI ARGS: \"$WRAPPER\" -- \"$REAPER\" SteamLaunch \"$5\" -- \"$7\" --verb=waitforexitandrun -- \"${10}\" -- \"./$GAMEEXE\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
 			echo "" >> "$COMMONDIR/p2install.log"
-			"$REAPER" SteamLaunch "$3" -- $GAME_DEBUGGER "./$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
+			# "$WRAPPER" -- "$REAPER" SteamLaunch "$5" -- "$7" --verb=waitforexitandrun -- "${10}" -- "./$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
+			"$WRAPPER" -- "$REAPER" SteamLaunch "$5" -- "${10}" -- "./$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
 
 			# if [[ "$DEBUG" -eq 1 ]]; then
 			# 	gdb -p $(pgrep "$GAMEEXE")
