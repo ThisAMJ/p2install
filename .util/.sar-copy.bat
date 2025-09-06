@@ -39,6 +39,7 @@ call :killtask infra.exe          &:: INFRA
 call :killtask beginnersguide.exe &:: The Beginner's Guide
 call :killtask beginnersguide.exe &:: The Beginner's Guide Crash Handler
 call :killtask stanley.exe        &:: The Stanley Parable
+call :killtask cleaninggame.exe   &:: The Cleaning Game
 call :killtask runme.exe          &:: Dark Messiah of Might and Magic Multi-Player
 call :killtask mm.exe             &:: Dark Messiah of Might and Magic Single-Player
 call :killtask swarm.exe          &:: Alien Swarm

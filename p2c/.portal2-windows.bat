@@ -3,6 +3,7 @@ cls
 
 set "DEBUG=0"
 set "KILL=1"
+set "VULKAN=1"
 
 goto killtasks
 
@@ -65,7 +66,7 @@ exit /B
 
 :n
 set "GAMEARG=%EXENAME%"
-set "EXTRA_ARGS=-novid +mat_motion_blur_enabled 0 -console -vulkan"
+set "EXTRA_ARGS=-novid +mat_motion_blur_enabled 0 -console"
 setlocal enabledelayedexpansion
 if exist "%COMMONDIR%\extra-args.txt" (
     for /F "usebackq delims=" %%i in ("%COMMONDIR%\extra-args.txt") do set "EXTRA_ARGS=!EXTRA_ARGS! %%i"
@@ -100,6 +101,10 @@ endlocal & set "GAMENAME=%GAMENAME%" & set "GAMEARG=%GAMEARG%" & set "GAMEPATH=%
 if "%GAMENAME%" == "unpack" (
     if "%GAMEARG%" == "hl2" set "GAMENAME=Half-Life 2"
     if "%GAMEARG%" == "portal" set "GAMENAME=Portal"
+)
+
+if "%VULKAN%" == "1" (
+    set "EXTRA_ARGS=%EXTRA_ARGS% -vulkan"
 )
 
 if not exist "%GAMEROOT%\%GAMEARG%\" (
