@@ -44,6 +44,12 @@ call :killtask runme.exe          &:: Dark Messiah of Might and Magic Multi-Play
 call :killtask mm.exe             &:: Dark Messiah of Might and Magic Single-Player
 call :killtask swarm.exe          &:: Alien Swarm
 
+if %KILLED% GTR 0 (
+    @REM Wait 200ms before launching to make sure the game is closed
+    echo Waiting for processes to fully close...
+    ping 127.0.0.1 -n 2 > NUL
+)
+
 if ("%COPY%" == "1") (
     echo Copying SAR to common directory...
     copy /Y "%src%" "%commondir%\%binary%"
@@ -57,12 +63,6 @@ if ("%COPY%" == "1") (
 echo.> "%commondir%\..\.util\.sar-build.txt"
 set /p appid=<"%commondir%\..\.util\.sar-appid.txt"
 if "%appid%"=="" set appid=620
-
-if %KILLED% GTR 0 (
-    @REM Wait 200ms before launching to make sure the game is closed
-    echo Waiting for processes to fully close...
-    ping 127.0.0.1 -n 2 > NUL
-)
 
 echo SAR built and installed!
 if "%KILL%"=="1" (
