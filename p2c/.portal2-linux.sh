@@ -55,15 +55,19 @@ else
 	echo "" >> "$COMMONDIR/p2install.log"
 	exit 1
 fi
-if [[ "$7" == *"_sniper"* ]]; then
-	PLATFORM="Proton"
-	PROTON=1
-	GAMEEXE="${12}"
-fi
 if [[ "$PLATFORM" == "Linux" ]]; then
 	if [[ -f "$COMMONDIR/srconfigs-linux.txt" ]]; then
 		SRCONFIGS=$(cat "$COMMONDIR/srconfigs-linux.txt")
 	fi
+fi
+COMMONDIR_PATH="$COMMONDIR"
+SRCONFIGS_PATH="$SRCONFIGS"
+if [[ "$7" == *"_sniper"* || "${10}" == *"Proton"* ]]; then
+	PLATFORM="Proton"
+	PROTON=1
+	GAMEEXE="${12}"
+	COMMONDIR_PATH="Z:/$COMMONDIR_PATH"
+	SRCONFIGS_PATH="Z:/$SRCONFIGS_PATH"
 fi
 if [[ ! -f "$GAMEEXE" ]]; then
 	echo "Malformed launch command: $@" >> "$COMMONDIR/p2install.log"
@@ -161,9 +165,9 @@ P2PATH="$COMMONDIR/../.dirs/Portal 2" # lol this is a silly thing
 for x in "$GAMEARG"/*.txt; do if [[ "$(basename "$x" | tr '[:upper:]' '[:lower:]')" == "gameinfo.txt" && "$(basename "$x")" != "gameinfo.txt" ]]; then mv "$x" "$GAMEARG/gameinfo.txt"; fi; done
 if [[ -f "$COMMONDIR/../.util/gameinfo/$GAMENAME.txt" ]]; then
 	ESCAPED_GAMEROOT=$(printf '%s\n' "$GAMEROOT" | sed -e 's/[\/&]/\\&/g')
-	ESCAPED_COMMONDIR=$(printf '%s\n' "$COMMONDIR" | sed -e 's/[\/&]/\\&/g')
+	ESCAPED_COMMONDIR=$(printf '%s\n' "$COMMONDIR_PATH" | sed -e 's/[\/&]/\\&/g')
 	ESCAPED_P2PATH=$(printf '%s\n' "$P2PATH" | sed -e 's/[\/&]/\\&/g')
-	ESCAPED_SRCONFIGS=$(printf '%s\n' "$SRCONFIGS" | sed -e 's/[\/&]/\\&/g')
+	ESCAPED_SRCONFIGS=$(printf '%s\n' "$SRCONFIGS_PATH" | sed -e 's/[\/&]/\\&/g')
 	cp -f  "$COMMONDIR/../.util/gameinfo/$GAMENAME.txt" "$GAMEARG/gameinfo.txt"
 	sed -i "s/GAMEROOTGOESHERE/$ESCAPED_GAMEROOT/"   "$GAMEARG/gameinfo.txt"
 	sed -i "s/COMMONDIRGOESHERE/COMMONDIRGOESHERE\"\nGame \"$ESCAPED_SRCONFIGS/" "$GAMEARG/gameinfo.txt"
