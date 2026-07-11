@@ -263,10 +263,8 @@ if exist "%COMMONDIR%\cfg\p2install-extra.bat" (
 )
 
 START "" "%GAMEEXE%" -game "%GAMEARG%" %EXTRA_ARGS%
-if "%PROTON%" == "1" (
-    if exist "%COMMONDIR%/LiveSplit/LiveSplit.exe" (
-        start "%COMMONDIR%/LiveSplit/LiveSplit.exe"
-    )
+if exist "%COMMONDIR%/LiveSplit/LiveSplit.exe" (
+    start "%COMMONDIR%/LiveSplit/LiveSplit.exe"
 )
 
 for /f "tokens=2" %%a in ('tasklist /nh /fi "imagename eq %EXENAME%.exe"') do set "PID=%%a"

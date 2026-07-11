@@ -317,6 +317,10 @@ elif [[ "$LINUX" -eq 1 ]]; then
 	STATUS=42
 	while [ $STATUS -eq 42 ]; do
 		if [[ "$PROTON" == 1 ]]; then
+			if [[ -f "$COMMONDIR/LiveSplit/LiveSplit.exe" ]]; then
+				echo "LIVESPLIT ARGS: \"$WRAPPER\" -- \"$REAPER\" SteamLaunch \"$5\" -- \"$7\" --verb=runinprefix -- \"${10}\" runinprefix \"$COMMONDIR/LiveSplit/LiveSplit.exe\"" >> "$COMMONDIR/p2install.log"
+				sleep 5 && "$WRAPPER" -- "$REAPER" SteamLaunch "$5" -- "$7" --verb=runinprefix -- "${10}" runinprefix "$COMMONDIR/LiveSplit/LiveSplit.exe" &
+			fi
 			echo "FULL BOI ARGS: \"$WRAPPER\" -- \"$REAPER\" SteamLaunch \"$5\" -- \"$7\" --verb=waitforexitandrun -- \"${10}\" waitforexitandrun \"./$GAMEEXE\" -game \"$GAMEARG\" $EXTRA_ARGS" >> "$COMMONDIR/p2install.log"
 			echo "" >> "$COMMONDIR/p2install.log"
 			"$WRAPPER" -- "$REAPER" SteamLaunch "$5" -- "$7" --verb=waitforexitandrun -- "${10}" waitforexitandrun "./$GAMEEXE" -game "$GAMEARG" $EXTRA_ARGS
