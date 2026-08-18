@@ -62,7 +62,7 @@ if [[ "$PLATFORM" == "Linux" ]]; then
 fi
 COMMONDIR_PATH="$COMMONDIR"
 SRCONFIGS_PATH="$SRCONFIGS"
-if [[ "$7" == *"_sniper"* || "${10}" == *"Proton"* ]]; then
+if [[ "$7" == *"_sniper"* || "${10,,}" == *"proton"* ]]; then
 	PLATFORM="Proton"
 	PROTON=1
 	GAMEEXE="${12}"
